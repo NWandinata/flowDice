@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 	ifstream finD, finW;
 	fin.open(argv[1]);
 
-
+	fin.close();
 
 	return 0;
 }
