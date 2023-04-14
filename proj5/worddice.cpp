@@ -61,6 +61,22 @@ Node::Node(int id, Node_Type type, string word = "") {
 		letters[word[i] - 65] = true;
 }
 
+// reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
+// reverse_edge = false - ONLY USE INSIDE CONSTRCUTOR TO MAKE REVERSE EDGES (we want a reverse edge)
+Edge::Edge(class Node *to, class Node *from, bool reverse_edge = false) {
+	this->to = to;
+	this->from = from;
+	if(reverse_edge) {
+		original = 1;
+		residual = 0;
+		reverse = Edge(from, to, false);
+	}
+	else {
+		original = 0;
+		residual = 0;
+	}
+}
+
 int main(int argc, char *argv[]) {
 	string word, die;
 	vector<string> words;
