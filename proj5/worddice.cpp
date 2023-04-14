@@ -6,6 +6,7 @@ using namespace std;
 
 class Node{
 	public:
+		enum Node_Type {source, sink, word, dice};
 		Node(int id, Node_Type type, string word = ""); //constructor for nodes
 		~Node(); //default destructor
 		bool has_letter(char c);
@@ -56,8 +57,10 @@ int main(int argc, char *argv[]) {
 	// Dev Note: Put dice into graph while reading input but add word when done
 	ifstream finD, finW;
 	finD.open(argv[1]);
+	finW.open(argv[2]);
 
 	finD.close();
+	finW.close();
 
 	return 0;
 }
