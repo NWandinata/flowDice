@@ -6,7 +6,7 @@ using namespace std;
 
 class Node{
 	public:
-		enum Node_Type {source, sink, word, dice};
+		typedef enum Node_Type {source, sink, word, dice};
 		Node(int id, Node_Type type, string word = ""); //constructor for nodes
 		~Node(); //default destructor
 		bool has_letter(char c);
@@ -48,6 +48,18 @@ class Graph{
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
 	 void print_node_order(string word); //print spelling Ids and word
 };
+
+Node::Node(int id, Node_Type type, string word = "") {
+	this->id = id;
+	this->type = type;
+	visited = 0;
+	for(int i = 0; i < 26; i++)
+		letters.push_back(false);
+
+	// Uses ASCII table to find each letter's corresponding index
+	for(int i = 0; i < word.length(); i++)
+		letters[word[i] - 65] = true;
+}
 
 int main(int argc, char *argv[]) {
 	string word, die;
