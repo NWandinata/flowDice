@@ -55,9 +55,9 @@ int main(int argc, char *argv[]) {
 	// Use argv and file streams to read input
 	// Dev Note: Put dice into graph while reading input but add word when done
 	ifstream finD, finW;
-	fin.open(argv[1]);
+	finD.open(argv[1]);
 
-	fin.close();
+	finD.close();
 
 	return 0;
 }
