@@ -77,6 +77,43 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge = false) {
 	}
 }
 
+
+Graph::Graph(){
+    source = new Node(0, Node::source, "");
+    sink = NULL;
+    min_nodes = 0;
+
+}
+
+Graph::~Graph(){
+    for (auto& node : nodes) {
+        delete node;
+    }
+}
+
+
+void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
+    Node* node = new Node(id, Node::dice, die);
+	Edge(node, source, true);//add edges later connect to source
+	nodes.push_back(node);//add to Nodes vector
+}
+
+
+void Graph::add_word_to_graph(string word, int id){ //add &id back in if things don't work
+	for (int i = 0; i < word.size(); i++) {  // iterate over each index in the string 'word' and allocate each letter in the word
+        string let(1, word[i]);
+        Node* node = new Node(id, Node::word, let);
+        nodes.push_back(node);
+		Edge(sink, node, true); //make edge from letter to sink
+
+		for(int j = 0; j < 4; j++){
+			if(has_letter(word[i], nodes[i])){ //if a letter in the die matches the asking letter
+				Edge(node, nodes[i], true); //make edge from dice with matching letter to letter
+			}
+		}
+	}
+}
+
 int main(int argc, char *argv[]) {
 	string word, die;
 	vector<string> words;
