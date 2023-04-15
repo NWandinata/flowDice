@@ -101,8 +101,10 @@ Graph::~Graph(){
 
 void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
     Node* node = new Node(id, Node::dice, die);
-	Edge(node, source, true);//add edges later connect to source
-	source -> adj.push_back(node); //adds to adjacency list; might need to fix
+	//Edge(node, source, true);//add edges later connect to source
+	//source -> adj.push_back(node); //adds to adjacency list; might need to fix
+	Edge* edge = new Edge(node, source, true);//add edges later connect to source
+    source -> adj.push_back(edge); //adds to adjacency list; might need to fix
 	nodes.push_back(node);//add to Nodes vector
 }
 
