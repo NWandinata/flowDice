@@ -76,7 +76,7 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	if(reverse_edge) {
 		original = 1;
 		residual = 0;
-		reverse = Edge(from, to, false);
+		reverse = new Edge(from, to, false);
 	}
 	else {
 		original = 0;
