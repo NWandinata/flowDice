@@ -31,18 +31,6 @@ class Node{
 		Edge *backedge; //previous edge for Edmonds-Karp
 };
 
-/*class Edge{
-	public:
-		//from -> to
-		class Node *to; //node edge is pointing to
-		class Node *from; //node edge is pointing from
-		Edge(class Node *to, class Node *from, bool reverse_edge = false); //constructor for edges
-		~Edge(){}; //default destructor
-		Edge *reverse; //edge going the other way
-		int original; //original weight per edge
-		int residual; //allows for updated weighting during Edmonds-Karp
-};*/
-
 class Graph{
  public:
 	 Graph(); //constructor initializes graph with source node
@@ -54,7 +42,7 @@ class Graph{
 	 int min_nodes; //min number of dice nodes
 	 string word;
 	 void add_dice_to_graph(string die, int id); //add dice nodes to graph
-	 void add_word_to_graph(string word, int& id); //add word (letter) nodes to graph
+	 void add_word_to_graph(string word, int id); //add word (letter) nodes to graph
 	 bool BFS(); //breadth first search for Edmonds-Karp
 	 bool spell_word(); //runs Edmonds-Karp to see if we can spell the word
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
@@ -137,11 +125,11 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
 	}
 }
 
-Graph::void dump_nodes() {
+void Graph::dump_nodes() {
 	for (int i = 0; i < nodes.size(); i++) {
-		cout << "Node " << nodes[i]->id << ": " << nodes[i]->type << " Edges to "
+		cout << "Node " << nodes[i]->id << ": " << nodes[i]->type << " Edges to ";
 		for(int i = 0; i < nodes[i]->adj.size(); i++)
-			cout << nodes[i]->adj[i]->to << " " 
+			cout << nodes[i]->adj[i]->to << " "; 
 		cout << endl;
 	}
 }
