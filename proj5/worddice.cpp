@@ -64,7 +64,7 @@ Node::Node(int id, Node_Type type, string word = "") {
 	// Dev Note: Setup backedge based on node type
 }
 
-Node::friend bool has_letter(char c, Node *die) {
+bool has_letter(char c, Node *die) {
 	return die->letters[c - 65];
 }
 
