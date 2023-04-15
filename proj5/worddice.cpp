@@ -9,7 +9,7 @@ class Node{
 		typedef enum Node_Type {source, sink, word, dice};
 		Node(int id, Node_Type type, string word = ""); //constructor for nodes
 		~Node(); //default destructor
-		bool has_letter(char c);
+		friend bool has_letter(char c, Node *die);
 		friend ostream& operator<<(ostream& os, const Node& node);
 		int id; //node id
 		Node_Type type; //type of node it is (source, sink, word or dice)
@@ -59,6 +59,10 @@ Node::Node(int id, Node_Type type, string word = "") {
 	// Uses ASCII table to find each letter's corresponding index
 	for(int i = 0; i < word.length(); i++)
 		letters[word[i] - 65] = true;
+}
+
+Node::friend bool has_letter(char c, Node *die) {
+	return die.letters[c - 65];
 }
 
 // reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
