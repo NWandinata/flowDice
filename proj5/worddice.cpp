@@ -47,6 +47,7 @@ class Graph{
 	 bool spell_word(); //runs Edmonds-Karp to see if we can spell the word
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
 	 void print_node_order(string word); //print spelling Ids and word
+	 void dump_node(class Node *node); // Only use for debugging
 };
 
 Node::Node(int id, Node_Type type, string word = "") {
@@ -62,7 +63,7 @@ Node::Node(int id, Node_Type type, string word = "") {
 }
 
 Node::friend bool has_letter(char c, Node *die) {
-	return die.letters[c - 65];
+	return die->letters[c - 65];
 }
 
 // reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
@@ -119,6 +120,14 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
 			}
 		}
 	}
+}
+
+Graph::void dump_node(class Node *node) {
+	cout << "Node " << node->id << ": " << node->type << " Edges to "
+	for(int i = 0; i < node->adj.size(); i++) {
+		cout << node->adj[i]->to << " "
+	}
+	cout << endl;
 }
 
 int main(int argc, char *argv[]) {
