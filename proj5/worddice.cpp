@@ -47,7 +47,7 @@ class Graph{
 	 bool spell_word(); //runs Edmonds-Karp to see if we can spell the word
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
 	 void print_node_order(string word); //print spelling Ids and word
-	 void dump_node(class Node *node); // Only use for debugging
+	 void dump_nodes(); // Only use for debugging
 };
 
 Node::Node(int id, Node_Type type, string word = "") {
@@ -60,6 +60,8 @@ Node::Node(int id, Node_Type type, string word = "") {
 	// Uses ASCII table to find each letter's corresponding index
 	for(int i = 0; i < word.length(); i++)
 		letters[word[i] - 65] = true;
+
+	// Dev Note: Setup backedge based on node type
 }
 
 Node::friend bool has_letter(char c, Node *die) {
@@ -106,6 +108,7 @@ void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vector
 
 
 void Graph::add_word_to_graph(string word, int id){ //add &id back in if things don't work
+	sink = new Node(0, Node::sink, "");
 	for (int i = 0; i < word.size(); i++) {  // iterate over each index in the string 'word' and allocate each letter in the word
         string let(1, word[i]);
         Node* node = new Node(id, Node::word, let);
@@ -122,25 +125,42 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
 	}
 }
 
-Graph::void dump_node(class Node *node) {
-	cout << "Node " << node->id << ": " << node->type << " Edges to "
-	for(int i = 0; i < node->adj.size(); i++) {
-		cout << node->adj[i]->to << " "
+Graph::void dump_nodes() {
+	for (int i = 0; i < nodes.size(); i++) {
+		cout << "Node " << nodes[i]->id << ": " << nodes[i]->type << " Edges to "
+		for(int i = 0; i < nodes[i]->adj.size(); i++)
+			cout << nodes[i]->adj[i]->to << " " 
+		cout << endl;
 	}
-	cout << endl;
 }
 
 int main(int argc, char *argv[]) {
 	string word, die;
-	vector<string> words;
+	int id = 0;
+	Graph *graph;
+	graph = new Graph();
 
-	// Use argv and file streams to read input
-	// Dev Note: Put dice into graph while reading input but add word when done
 	ifstream finD, finW;
 	finD.open(argv[1]);
 	finW.open(argv[2]);
 
+	while(true) {
+		finD >> die;
+		if(finD.eof())
+			break;
+		graph->add_dice_to_graph(die, id);
+		id += 1;
+	}
 	finD.close();
+	id = 0;
+
+	//while(true) {
+		finW >> word;
+		graph->add_word_to_graph(word, id)
+		graph->dump_nodes();
+		// Delete word
+		id += 1;
+	//}
 	finW.close();
 
 	return 0;
