@@ -4,6 +4,18 @@
 
 using namespace std;
 
+class Edge{
+    public:
+        //from -> to
+        class Node *to; //node edge is pointing to
+        class Node *from; //node edge is pointing from
+        Edge(class Node *to, class Node *from, bool reverse_edge = false); //constructor for edges
+        ~Edge(){}; //default destructor
+        Edge *reverse; //edge going the other way
+        int original; //original weight per edge
+        int residual; //allows for updated weighting during Edmonds-Karp
+};
+
 class Node{
 	public:
 		typedef enum Node_Type {source, sink, word, dice};
@@ -19,7 +31,7 @@ class Node{
 		Edge *backedge; //previous edge for Edmonds-Karp
 };
 
-class Edge{
+/*class Edge{
 	public:
 		//from -> to
 		class Node *to; //node edge is pointing to
@@ -29,7 +41,7 @@ class Edge{
 		Edge *reverse; //edge going the other way
 		int original; //original weight per edge
 		int residual; //allows for updated weighting during Edmonds-Karp
-};
+};*/
 
 class Graph{
  public:
@@ -50,7 +62,7 @@ class Graph{
 	 void dump_nodes(); // Only use for debugging
 };
 
-Node::Node(int id, Node_Type type, string word = "") {
+Node::Node(int id, Node_Type type, string word) {
 	this->id = id;
 	this->type = type;
 	visited = 0;
@@ -70,7 +82,7 @@ bool has_letter(char c, Node *die) {
 
 // reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
 // reverse_edge = false - ONLY USE INSIDE CONSTRCUTOR TO MAKE REVERSE EDGES (we want a reverse edge)
-Edge::Edge(class Node *to, class Node *from, bool reverse_edge = false) {
+Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	this->to = to;
 	this->from = from;
 	if(reverse_edge) {
