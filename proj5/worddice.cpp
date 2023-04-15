@@ -99,6 +99,7 @@ Graph::~Graph(){
 void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
     Node* node = new Node(id, Node::dice, die);
 	Edge(node, source, true);//add edges later connect to source
+	source -> adj.push_back(node); //adds to adjacency list; might need to fix
 	nodes.push_back(node);//add to Nodes vector
 }
 
@@ -109,10 +110,12 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
         Node* node = new Node(id, Node::word, let);
         nodes.push_back(node);
 		Edge(sink, node, true); //make edge from letter to sink
+		node -> adj.push_back(sink); //add to adj list
 
 		for(int j = 0; j < 4; j++){
 			if(has_letter(word[i], nodes[i])){ //if a letter in the die matches the asking letter
 				Edge(node, nodes[i], true); //make edge from dice with matching letter to letter
+				nodes[i] -> adj.push_back(node); //add to adj
 			}
 		}
 	}
