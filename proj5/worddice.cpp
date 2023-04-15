@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
 
 	//while(true) {
 		finW >> word;
-		graph->add_word_to_graph(word, id)
+		graph->add_word_to_graph(word, id);
 		graph->dump_nodes();
 		// Delete word
 		id += 1;
