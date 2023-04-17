@@ -20,7 +20,7 @@ class Node{
 	public:
 		typedef enum Node_Type {source, sink, word, dice};
 		Node(int id, Node_Type type, string word = ""); //constructor for nodes
-		~Node(); //default destructor
+		//~Node(); //default destructor
 		friend bool has_letter(char c, Node *die);
 		friend ostream& operator<<(ostream& os, const Node& node);
 		int id; //node id
@@ -92,11 +92,11 @@ Graph::Graph(){
 
 }
 
-Graph::~Graph(){
+/*Graph::~Graph(){
     for (auto& node : nodes) {
         delete node;
     }
-}
+}*/
 
 
 void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
@@ -115,13 +115,18 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
         string let(1, word[i]);
         Node* node = new Node(id, Node::word, let);
         nodes.push_back(node);
-		Edge(sink, node, true); //make edge from letter to sink
-		node -> adj.push_back(sink); //add to adj list
+		//Edge(sink, node, true); //make edge from letter to sink
+		//node -> adj.push_back(sink); //add to adj list
+		Edge* edge = new Edge(sink, node, true);//add edges later connect to source
+		node -> adj.push_back(edge); //adds to adjacency list; might need to fix
+
 
 		for(int j = 0; j < 4; j++){
 			if(has_letter(word[i], nodes[i])){ //if a letter in the die matches the asking letter
-				Edge(node, nodes[i], true); //make edge from dice with matching letter to letter
-				nodes[i] -> adj.push_back(node); //add to adj
+				//Edge(node, nodes[i], true); //make edge from dice with matching letter to letter
+				//nodes[i] -> adj.push_back(node); //add to adj
+				Edge* edge = new Edge(node, nodes[i], true);//add edges later connect to source
+				nodes[i] -> adj.push_back(edge); //adds to adjacency list; might need to fix
 			}
 		}
 	}
@@ -129,7 +134,7 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
 
 void Graph::dump_nodes() {
 	for (int i = 0; i < nodes.size(); i++) {
-		cout << "Node " << nodes[i]->id << ": " << nodes[i]->type << " Edges to ";
+		cout << "Node " << i << ": " << nodes[i]->type << " Edges to ";
 		for(int i = 0; i < nodes[i]->adj.size(); i++)
 			cout << nodes[i]->adj[i]->to << " "; 
 		cout << endl;
