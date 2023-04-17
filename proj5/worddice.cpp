@@ -235,6 +235,10 @@ int main(int argc, char *argv[]) {
 	//while(true) {
 		finW >> word;
 		graph->add_word_to_graph(word, id);
+
+		if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
+		//else graph -> print_node_order(word);
+
 		graph->dump_nodes();
 		// Delete word
 		id += 1;
