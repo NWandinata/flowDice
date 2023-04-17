@@ -129,6 +129,67 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
     nodes.push_back(sink);
 }
 
+bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorithm to find the maximum flow in the graph.
+	for(auto it = nodes.begin(); it != nodes.end(); it++){
+		(*it) -> visited = 0;
+		(*it) -> backedge = NULL;
+	}
+
+	queue<Node*> bfs;
+	bfs.push(source);
+	source -> visited = 1;
+
+	while(!bfs.empty()){
+		Node *current_node = bfs.front();
+		bfs.pop();
+
+		for (auto it : current_node->adj) {
+            Node* next = it -> to;
+            if (next -> visited == 0 && it -> residual > 0) {
+                next -> visited = 1;
+                next -> backedge = it;
+                bfs.push(next);
+
+                if (next == sink) { // found a path to the sink node
+                    return true;
+                }
+            }
+        }
+	}
+
+	//if no path to sink was found
+	return false;
+}
+
+bool Graph::spell_word() {
+    int total_flow = 0;
+    while (BFS()) {
+		//unvisited nodes are 0
+        source->visited = 1;
+        int bottle = INT_MAX;
+
+        if (bottle == 0) { //might not be needed
+            break;
+        }
+        total_flow += bottle;
+    }
+
+    for (auto node : nodes) {
+        node -> visited = 1;
+    }
+
+    for (auto id : spellingIds) {
+        Node* node = nodes[id];
+        if (!node -> visited) {
+            return false;
+        }
+        spellingIds.push_back(id);
+    }
+
+	if(total_flow == spellingIds.size()) return true;
+	else return false;
+}
+
 void Graph::dump_nodes() {
 	string nodeType = "Missing Type";
     for (int i = 0; i < nodes.size(); i++) {
