@@ -89,7 +89,7 @@ Graph::Graph(){
     source = new Node(0, Node::source, "");
     sink = NULL;
     min_nodes = 0;
-
+	nodes.push_back(source);
 }
 
 /*Graph::~Graph(){
@@ -111,34 +111,40 @@ void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vector
 
 void Graph::add_word_to_graph(string word, int id){ //add &id back in if things don't work
 	sink = new Node(0, Node::sink, "");
-	for (int i = 0; i < word.size(); i++) {  // iterate over each index in the string 'word' and allocate each letter in the word
+    for (int i = 0; i < word.size(); i++) {  // iterate over each index in the string 'word' and allocate each letter in the word
         string let(1, word[i]);
         Node* node = new Node(id, Node::word, let);
         nodes.push_back(node);
-		//Edge(sink, node, true); //make edge from letter to sink
-		//node -> adj.push_back(sink); //add to adj list
-		Edge* edge = new Edge(sink, node, true);//add edges later connect to source
-		node -> adj.push_back(edge); //adds to adjacency list; might need to fix
+        Edge* edge = new Edge(sink, node, true);//add edges later connect to source
+        node -> adj.push_back(edge); //adds to adjacency list; might need to fix
 
 
-		for(int j = 0; j < 4; j++){
-			if(has_letter(word[i], nodes[i])){ //if a letter in the die matches the asking letter
-				//Edge(node, nodes[i], true); //make edge from dice with matching letter to letter
-				//nodes[i] -> adj.push_back(node); //add to adj
-				Edge* edge = new Edge(node, nodes[i], true);//add edges later connect to source
-				nodes[i] -> adj.push_back(edge); //adds to adjacency list; might need to fix
-			}
-		}
-	}
+        for(int j = 1; j < 5; j++){
+            if(has_letter(word[i], nodes[j])){ //if a letter in the die matches the asking letter
+                Edge* edge = new Edge(node, nodes[j], true);//add edges later connect to source
+                nodes[j] -> adj.push_back(edge); //adds to adjacency list; might need to fix
+            }
+        }
+    }
+    nodes.push_back(sink);
 }
 
 void Graph::dump_nodes() {
-	for (int i = 0; i < nodes.size(); i++) {
-		cout << "Node " << i << ": " << nodes[i]->type << " Edges to ";
-		for(int i = 0; i < nodes[i]->adj.size(); i++)
-			cout << nodes[i]->adj[i]->to << " "; 
-		cout << endl;
-	}
+	string nodeType = "Missing Type";
+    for (int i = 0; i < nodes.size(); i++) {
+        if(nodes[i]->type == Node::Node_Type::source) nodeType = "SOURCE";
+        else if(nodes[i]->type == Node::Node_Type::sink) nodeType = "SINK";
+        else if(nodes[i]->type == Node::Node_Type::word) nodeType = "WORD";
+        else if(nodes[i]->type == Node::Node_Type::dice) nodeType = "DICE";
+        cout << "Node " << i << ": " << nodeType << " Edges to ";
+        for(int j = 0; j < nodes[i]->adj.size(); j++) {
+			int nodeNum = -1;
+			for(int k = 0; k < nodes.size(); k++)
+				if(nodes[i]->adj[j]->to == nodes[k]) nodeNum = k;
+            cout << nodeNum << " ";
+		}
+        cout << endl;
+    }
 }
 
 int main(int argc, char *argv[]) {
