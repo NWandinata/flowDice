@@ -10,7 +10,7 @@ class Edge{
         class Node *to; //node edge is pointing to
         class Node *from; //node edge is pointing from
         Edge(class Node *to, class Node *from, bool reverse_edge = false); //constructor for edges
-        ~Edge(){}; //default destructor
+        ~Edge(){}; //default destructor // Dev Note: LEAVE THIS ALONE
         Edge *reverse; //edge going the other way
         int original; //original weight per edge
         int residual; //allows for updated weighting during Edmonds-Karp
@@ -20,9 +20,9 @@ class Node{
 	public:
 		typedef enum Node_Type {source, sink, word, dice};
 		Node(int id, Node_Type type, string word = ""); //constructor for nodes
-		//~Node(); //default destructor
+		~Node(); //default destructor
 		friend bool has_letter(char c, Node *die);
-		friend ostream& operator<<(ostream& os, const Node& node);
+		//friend ostream& operator<<(ostream& os, const Node& node); // Dev Note: Probably unnecessary
 		int id; //node id
 		Node_Type type; //type of node it is (source, sink, word or dice)
 		vector<bool> letters; //length 26 with letters contained in word set to 1
@@ -50,24 +50,6 @@ class Graph{
 	 void dump_nodes(); // Only use for debugging
 };
 
-Node::Node(int id, Node_Type type, string word) {
-	this->id = id;
-	this->type = type;
-	visited = 0;
-	for(int i = 0; i < 26; i++)
-		letters.push_back(false);
-
-	// Uses ASCII table to find each letter's corresponding index
-	for(int i = 0; i < word.length(); i++)
-		letters[word[i] - 65] = true;
-
-	// Dev Note: Setup backedge based on node type
-}
-
-bool has_letter(char c, Node *die) {
-	return die->letters[c - 65];
-}
-
 // reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
 // reverse_edge = false - ONLY USE INSIDE CONSTRCUTOR TO MAKE REVERSE EDGES (we want a reverse edge)
 Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
@@ -84,6 +66,28 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	}
 }
 
+Node::Node(int id, Node_Type type, string word) {
+    this->id = id;
+    this->type = type;
+    visited = 0;
+    for(int i = 0; i < 26; i++)
+        letters.push_back(false);
+
+    // Uses ASCII table to find each letter's corresponding index
+    for(int i = 0; i < word.length(); i++)
+        letters[word[i] - 65] = true;
+
+    // Dev Note: Setup backedge based on node type
+}
+
+bool has_letter(char c, Node *die) {
+    return die->letters[c - 65];
+}
+
+Node::~Node() {
+	for(int i = 0; i < adj.size(); i++)
+		delete adj[i];
+}
 
 Graph::Graph(){
     source = new Node(0, Node::source, "");
@@ -92,11 +96,11 @@ Graph::Graph(){
 	nodes.push_back(source);
 }
 
-/*Graph::~Graph(){
+Graph::~Graph(){
     for (auto& node : nodes) {
         delete node;
     }
-}*/
+}
 
 
 void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
