@@ -198,6 +198,16 @@ bool Graph::spell_word() {
 	else return false;
 }
 
+void Graph::delete_word_from_graph() {
+    for(int i = nodes.size() - 1; i > 1; i--) {
+        if(nodes[i]->type == Node::Node_Type::sink || nodes[i]->type == Node::Node_Type::word)
+            delete nodes[i];
+        else
+            break;
+    }
+    cout << "Nodes vector size: " << nodes.size() << endl;
+}
+
 void Graph::dump_nodes() {
 	string nodeType = "Missing Type";
     for (int i = 0; i < nodes.size(); i++) {
@@ -236,7 +246,7 @@ int main(int argc, char *argv[]) {
 	finD.close();
 	id = 0;
 
-	//while(true) {
+	while(true) {
 		finW >> word;
 		graph->add_word_to_graph(word, id);
 
@@ -245,8 +255,9 @@ int main(int argc, char *argv[]) {
 
 		graph->dump_nodes();
 		// Delete word
+		graph->delete_word_from_graph();
 		id += 1;
-	//}
+	}
 	finW.close();
 
 	return 0;
