@@ -47,7 +47,7 @@ class Graph{
 	 int min_nodes; //min number of dice nodes
 	 string word;
 	 void add_dice_to_graph(string die, int id); //add dice nodes to graph
-	 void add_word_to_graph(string word, int id); //add word (letter) nodes to graph
+	 void add_word_to_graph(string word, int id, int numDice); //add word (letter) nodes to graph
 	 bool BFS(); //breadth first search for Edmonds-Karp
 	 bool spell_word(); //runs Edmonds-Karp to see if we can spell the word
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
@@ -82,7 +82,7 @@ Node::Node(int id, Node_Type type, string word) {
     for(int i = 0; i < word.length(); i++)
         letters[word[i] - 65] = true;
 
-    // Dev Note: Setup backedge based on node type
+    // Dev Note: Setup backedge based on node type (maybe not necessary)
 }
 
 bool has_letter(char c, Node *die) {
@@ -118,7 +118,7 @@ void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vector
 }
 
 
-void Graph::add_word_to_graph(string word, int id){ //add &id back in if things don't work
+void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back in if things don't work
 	sink = new Node(0, Node::sink, "");
     for (int i = 0; i < word.size(); i++) {  // iterate over each index in the string 'word' and allocate each letter in the word
         string let(1, word[i]);
@@ -128,7 +128,7 @@ void Graph::add_word_to_graph(string word, int id){ //add &id back in if things 
         node -> adj.push_back(edge); //adds to adjacency list; might need to fix
 
 
-        for(int j = 1; j < 5; j++){
+        for(int j = 1; j <= numDice; j++){
             if(has_letter(word[i], nodes[j])){ //if a letter in the die matches the asking letter
                 Edge* edge = new Edge(node, nodes[j], true);//add edges later connect to source
                 nodes[j] -> adj.push_back(edge); //adds to adjacency list; might need to fix
@@ -214,9 +214,9 @@ void Graph::delete_word_from_graph() {
 	
 	// Delete adj list of dice
     for(int i = 1; i < nodes.size(); i++) {
-		for(int j = 0; j < nodes[i]->adj.size(); j++)
+		for(int j = 0; j < nodes[i]->adj.size(); j++) {
 			delete nodes[i]->adj[j];
-
+		}
 		nodes[i]->adj.clear();
     }
 }
@@ -255,6 +255,7 @@ void Graph::dump_nodes() {
 int main(int argc, char *argv[]) {
 	string word, die;
 	int id = 0;
+	int numDice = 0;
 	Graph *graph;
 	graph = new Graph();
 
@@ -268,6 +269,7 @@ int main(int argc, char *argv[]) {
 			break;
 		graph->add_dice_to_graph(die, id);
 		graph->dice.push_back(die); // Dev Note: Delete later, for dump_node
+		numDice += 1;
 		id += 1;
 	}
 	finD.close();
@@ -277,16 +279,19 @@ int main(int argc, char *argv[]) {
 		finW >> word;
 		if(finW.eof())
             break;
-		graph->add_word_to_graph(word, id);
-		//if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
-		//else graph -> print_node_order(word);
+		graph->add_word_to_graph(word, id, numDice);
+		graph->dump_nodes(); // Dev Note: Delete later
 
-		graph->dump_nodes();
+		if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
+        //else graph -> print_node_order(word);
+
 		graph->delete_word_from_graph();
 		cout << endl; // Dev Note: Delete later, this is for dump node
 		id += 1;
 	}
 	finW.close();
+
+	delete graph;
 
 	return 0;
 }
