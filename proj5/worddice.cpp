@@ -199,13 +199,17 @@ bool Graph::spell_word() {
 }
 
 void Graph::delete_word_from_graph() {
+	int count = 0;
     for(int i = nodes.size() - 1; i > 1; i--) {
-        if(nodes[i]->type == Node::Node_Type::sink || nodes[i]->type == Node::Node_Type::word)
+        if(nodes[i]->type == Node::Node_Type::sink || nodes[i]->type == Node::Node_Type::word) {
             delete nodes[i];
+			count += 1;
+		}
         else
             break;
     }
-    cout << "Nodes vector size: " << nodes.size() << endl;
+	nodes.resize(nodes.size() - count);
+    //cout << "Nodes vector size: " << nodes.size() << endl; // Dev Notes: For testing only
 }
 
 void Graph::dump_nodes() {
@@ -248,14 +252,15 @@ int main(int argc, char *argv[]) {
 
 	while(true) {
 		finW >> word;
+		if(finW.eof())
+            break;
 		graph->add_word_to_graph(word, id);
-
 		if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
 		//else graph -> print_node_order(word);
 
 		graph->dump_nodes();
-		// Delete word
 		graph->delete_word_from_graph();
+		cout << endl; // Dev Note: Delete later, this is for dump node
 		id += 1;
 	}
 	finW.close();
