@@ -145,6 +145,8 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 	}
 
 	queue<Node*> bfs;
+
+	//visit the source node first
 	bfs.push(source);
 	source -> visited = 1;
 
@@ -152,16 +154,16 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 		Node *current_node = bfs.front();
 		bfs.pop();
 
-		for (auto it : current_node->adj) {
-            Node* next = it -> to;
+		for (auto it : current_node -> adj) {
+            Node* next = it -> to;	//this could be the issue
             if (next -> visited == 0 && it -> residual > 0) {
                 next -> visited = 1;
                 next -> backedge = it;
-                bfs.push(next);
-
                 if (next == sink) { // found a path to the sink node
                     return true;
                 }
+
+				bfs.push(next);
             }
         }
 	}
@@ -170,11 +172,12 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 	return false;
 }
 
-bool Graph::spell_word() {
+bool Graph::spell_word() { //aka maxflow
     int total_flow = 0;
+
     while (BFS()) {
 		//unvisited nodes are 0
-        source->visited = 1;
+        source -> visited = 1;
         int bottle = INT_MAX;
 
         if (bottle == 0) { //might not be needed
@@ -220,6 +223,20 @@ void Graph::delete_word_from_graph() {
 		nodes[i]->adj.clear();
     }
 }
+
+
+void Graph::print_node_order(string word){
+    for (int i = 0; i < spellingIds.size(); i++) {
+		if(i == (int)spellingIds.size() - 1){
+        	cout << spellingIds[i] - min_nodes << ": "; //might need to take out min_nodes
+		}
+		else {
+			cout << spellingIds[i] - min_nodes << ",";
+		}
+    }
+	cout << word << endl;
+}
+
 
 void Graph::dump_nodes() {
 	string nodeType = "Missing Type";
