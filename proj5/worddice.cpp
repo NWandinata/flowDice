@@ -155,15 +155,14 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 		bfs.pop();
 
 		for (auto it : current_node -> adj) {
-            Node* next = it -> to;	//this could be the issue
-            if (next -> visited == 0 && it -> residual > 0) {
+            Node* next = it -> to;
+            if (next -> visited == 0 && it -> original == 1) {
                 next -> visited = 1;
                 next -> backedge = it;
+				bfs.push(next);
                 if (next == sink) { // found a path to the sink node
                     return true;
                 }
-
-				bfs.push(next);
             }
         }
 	}
@@ -172,34 +171,26 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 	return false;
 }
 
-bool Graph::spell_word() { //aka maxflow
-    int total_flow = 0;
+bool Graph::spell_word() { //aka maxflow - NOT FINISHED
+	int total_flow = 0; //may not need
 
-    while (BFS()) {
-		//unvisited nodes are 0
-        source -> visited = 1;
-        int bottle = INT_MAX;
+	while(BFS()){
+		Node *current_node = new Node;
+		current_node = sink;
+		
+		while(current_node != source){
+			Edge *back = current_node -> backedge;
 
-        if (bottle == 0) { //might not be needed
-            break;
-        }
-        total_flow += bottle;
-    }
+			back -> original = 0;
+			back -> residual = 1;
 
-    for (auto node : nodes) {
-        node -> visited = 1;
-    }
+			Edge *rev = back -> reverse;
+			rev -> residual = 0;
+			rev -> original = 1;
 
-    for (auto id : spellingIds) {
-        Node* node = nodes[id];
-        if (!node -> visited) {
-            return false;
-        }
-        spellingIds.push_back(id);
-    }
-
-	if(total_flow == spellingIds.size()) return true;
-	else return false;
+			current_node = rev -> to;
+		}
+	}
 }
 
 void Graph::delete_word_from_graph() {
