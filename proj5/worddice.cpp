@@ -230,8 +230,14 @@ void Graph::delete_word_from_graph() {
 void Graph::print_node_order(string word){
 	// Set up spellingIds in order
 	int letterIndex = 0;
-	while(spellingIds.size() != word.length()) {
+	int wordIndex = 1;
+	for(int i = 0; i < nodes.size() - 1; i++) {
+		wordIndex = i;
+		if(nodes[i]->type == Node::Node_Type::word)
+			break;
 	}
+	//while(spellingIds.size() != word.length()) {
+	//}
 
 	// Print
     /*for (int i = 0; i < spellingIds.size(); i++) {
@@ -274,6 +280,14 @@ void Graph::dump_nodes() {
 		}
         cout << endl;
     }
+	
+	int wordIndex;
+	for(int i = 0; i < nodes.size() - 1; i++) {
+        wordIndex = i;
+        if(nodes[i]->type == Node::Node_Type::word)
+            break;
+    }
+    cout << "Word Index: " << wordIndex << endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -307,7 +321,7 @@ int main(int argc, char *argv[]) {
 		graph->dump_nodes(); // Dev Note: Delete later
 
 		if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
-        else graph -> print_node_order(word);
+        //else graph -> print_node_order(word);
 
 		graph->delete_word_from_graph();
 		cout << endl; // Dev Note: Delete later, this is for dump node
