@@ -236,6 +236,7 @@ void Graph::print_node_order(string word){
 		if(nodes[i]->type == Node::Node_Type::word)
 			break;
 	}
+
 	//while(spellingIds.size() != word.length()) {
 	//}
 
@@ -322,6 +323,7 @@ int main(int argc, char *argv[]) {
 
 		if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
         //else graph -> print_node_order(word);
+		else cout << "Can spell word" << endl;
 
 		graph->delete_word_from_graph();
 		cout << endl; // Dev Note: Delete later, this is for dump node
