@@ -216,10 +216,10 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 void Graph::delete_word_from_graph() {
 	// Delete adj list of dice
     for(int i = 1; i < nodes.size(); i++) {
-		if(nodes[i]->type == Node::Node_Type::dice) {
+		if(nodes[i]->type == Node::Node_Type::dice || nodes[i]->type == Node::Node_Type::word){
 			for(int j = 0; j < nodes[i]->adj.size(); j++) {
-				delete nodes[i]->adj[j];
 				delete nodes[i]->adj[j]->reverse; // May or may not need
+				delete nodes[i]->adj[j];
 			}
 			nodes[i]->adj.clear();
 		}
@@ -231,12 +231,15 @@ void Graph::delete_word_from_graph() {
 	int count = 0;
     for(int i = nodes.size() - 1; i > 1; i--) {
         if(nodes[i]->type == Node::Node_Type::sink || nodes[i]->type == Node::Node_Type::word) {
-            delete nodes[i];
+            
+			delete nodes[i];
 			count += 1;
 		}
         else
             break;
     }
+
+	//cout << "Nodes vector size: " << nodes.size() - count << endl;
 	nodes.resize(nodes.size() - count);
     //cout << "Nodes vector size: " << nodes.size() << endl; // Dev Notes: For testing only
 }
