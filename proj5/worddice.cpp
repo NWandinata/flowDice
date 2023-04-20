@@ -228,13 +228,12 @@ void Graph::delete_word_from_graph() {
 }
 
 void Graph::print_node_order(string word){
-	for(int i = nodes.size() - 2; i > 1; i--) {
-        if(nodes[i]->type == Node::Node_Type::word) {
-			spellingIds.push_back(//reverse edge);
-        }
-        else
-            break;
-    }
+	// Set up spellingIds in order
+	int letterIndex = 0;
+	while(spellingIds.size() != word.length()) {
+	}
+
+	// Print
     /*for (int i = 0; i < spellingIds.size(); i++) {
 		if(i == (int)spellingIds.size() - 1){
         	cout << spellingIds[i] - min_nodes << ": "; //might need to take out min_nodes
