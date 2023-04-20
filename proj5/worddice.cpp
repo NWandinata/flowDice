@@ -217,6 +217,7 @@ void Graph::delete_word_from_graph() {
 		if(nodes[i]->type == Node::Node_Type::dice) {
 			for(int j = 0; j < nodes[i]->adj.size(); j++) {
 				delete nodes[i]->adj[j];
+				delete nodes[i]->adj[j]->reverse; // May or may not need
 			}
 			nodes[i]->adj.clear();
 		}
