@@ -62,13 +62,13 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	this->to = to;
 	this->from = from;
 	if(reverse_edge) {
-		original = 1;
-		residual = 0;
+		original = 1; //1
+		residual = 0; //0
 		reverse = new Edge(from, to, false);
 	}
 	else {
-		original = 0;
-		residual = 1;
+		original = 0; //0
+		residual = 1; //1
 		// Dev Note: Need to find a way to set reverse of the reverse to original
 	}
 }
@@ -311,10 +311,10 @@ void Graph::dump_nodes() {
 
 void Graph::reset_edges() {
 	for(int i = 0; i < source->adj.size(); i++) {
-		source->adj[i]->original = 1;
-		source->adj[i]->residual = 0;
-		source->adj[i]->reverse->original = 0;
-		source->adj[i]->reverse->residual = 1;
+		source->adj[i]->original = 1; //1
+		source->adj[i]->residual = 0; //0
+		source->adj[i]->reverse->original = 0; //0
+		source->adj[i]->reverse->residual = 1; //1
 	}
 }
 
