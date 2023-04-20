@@ -68,7 +68,7 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	}
 	else {
 		original = 0;
-		residual = 0;
+		residual = 1;
 		// Dev Note: Need to find a way to set reverse of the reverse to original
 	}
 }
@@ -249,7 +249,7 @@ void Graph::print_node_order(string word){
 	// Set up spellingIds in order
 	int letterIndex = 0;
 	int wordIndex = 1;
-	for(int i = 0; i < nodes.size() - 1; i++) {
+	for(int i = 1; i < nodes.size(); i++) {
 		wordIndex = i;
 		if(nodes[i]->type == Node::Node_Type::word)
 			break;
@@ -314,7 +314,7 @@ void Graph::reset_edges() {
 		source->adj[i]->original = 1;
 		source->adj[i]->residual = 0;
 		source->adj[i]->reverse->original = 0;
-		source->adj[i]->reverse->residual = 0;
+		source->adj[i]->reverse->residual = 1;
 	}
 }
 
