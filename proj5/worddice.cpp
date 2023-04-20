@@ -56,7 +56,7 @@ class Graph{
 };
 
 // reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
-// reverse_edge = false - ONLY USE INSIDE CONSTRCUTOR TO MAKE REVERSE EDGES (we want a reverse edge)
+// reverse_edge = false - ONLY USE INSIDE CONSTRUCTOR TO MAKE REVERSE EDGES (we want a reverse edge)
 Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	this->to = to;
 	this->from = from;
@@ -68,6 +68,7 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	else {
 		original = 0;
 		residual = 0;
+		// Dev Note: Need to find a way to set reverse of the reverse to original
 	}
 }
 
@@ -216,7 +217,7 @@ void Graph::delete_word_from_graph() {
 }
 
 
-void Graph::print_node_order(string word){
+/*void Graph::print_node_order(string word){
     for (int i = 0; i < spellingIds.size(); i++) {
 		if(i == (int)spellingIds.size() - 1){
         	cout << spellingIds[i] - min_nodes << ": "; //might need to take out min_nodes
@@ -226,7 +227,7 @@ void Graph::print_node_order(string word){
 		}
     }
 	cout << word << endl;
-}
+}*/
 
 
 void Graph::dump_nodes() {
