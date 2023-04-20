@@ -51,7 +51,7 @@ class Graph{
 	 bool BFS(); //breadth first search for Edmonds-Karp
 	 bool spell_word(string word); //runs Edmonds-Karp to see if we can spell the word
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
-	 void print_node_order(string word); //print spelling Ids and word
+	 void print_node_order(string word, int numDice); //print spelling Ids and word
 	 void dump_nodes(); // Only use for debugging
 	 void reset_edges();
 };
@@ -246,18 +246,18 @@ void Graph::delete_word_from_graph() {
     //cout << "Nodes vector size: " << nodes.size() << endl; // Dev Notes: For testing only
 }
 
-void Graph::print_node_order(string word){
+void Graph::print_node_order(string word, int numDice){
     // Set up spellingIds in order
     int letterIndex = 0;
-    int wordIndex;
+    /*int wordIndex;
     for(int i = 1; i < nodes.size(); i++) {
         wordIndex = i;
         if(nodes[i]->type == Node::Node_Type::word)
             break;
-    }
+    }*/
 
     while(word.length() - 1 != letterIndex) {
-        for(int i = wordIndex; i < nodes.size() - 1; i++) {
+        for(int i = 1; i <= numDice; i++) {
             for(int j = 0; j < nodes[i]->adj.size(); j++) {
                 if(nodes[i]->adj[j]->to->id == letterIndex && nodes[i]->adj[j]->original == 0) {
                     spellingIds.push_back(nodes[i]->id);
@@ -357,8 +357,8 @@ int main(int argc, char *argv[]) {
 		graph->dump_nodes(); // Dev Note: Delete later
 
 		if(graph -> spell_word(word) == false) cout << "Cannot spell " << word << endl;
-        //else graph -> print_node_order(word);
-		else cout << "Can spell word" << endl;
+        else graph -> print_node_order(word, numDice);
+		//else cout << "Can spell word" << endl;
 
 		graph->delete_word_from_graph();
 		graph->reset_edges();
