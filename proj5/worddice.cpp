@@ -331,8 +331,7 @@ int main(int argc, char *argv[]) {
 	string word, die;
 	int id = 0;
 	int numDice = 0;
-	Graph *graph;
-	graph = new Graph();
+	Graph *graph = new Graph();
 
 	ifstream finD, finW;
 	finD.open(argv[1]);
