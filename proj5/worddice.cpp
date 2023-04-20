@@ -49,7 +49,7 @@ class Graph{
 	 void add_dice_to_graph(string die, int id); //add dice nodes to graph
 	 void add_word_to_graph(string word, int id, int numDice); //add word (letter) nodes to graph
 	 bool BFS(); //breadth first search for Edmonds-Karp
-	 bool spell_word(); //runs Edmonds-Karp to see if we can spell the word
+	 bool spell_word(string word); //runs Edmonds-Karp to see if we can spell the word
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
 	 void print_node_order(string word); //print spelling Ids and word
 	 void dump_nodes(); // Only use for debugging
@@ -172,8 +172,8 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 	return false;
 }
 
-bool Graph::spell_word() { //aka maxflow - NOT FINISHED
-	int total_flow = 0; //may not need
+bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
+	int counter = 0; //may not need
 
 	while(BFS()){
 		//Node *current_node = new Node;
@@ -192,9 +192,13 @@ bool Graph::spell_word() { //aka maxflow - NOT FINISHED
 
 			current_node = rev -> to;
 		}
+		counter++;
 	}
 
-	for(int i = nodes.size() - 2; i > 1; i--) {
+	if (counter == word.length()) return true;
+	else return false;
+
+	/*for(int i = nodes.size() - 2; i > 1; i--) {
 		if(nodes[i]->type == Node::Node_Type::word) {
 			if(nodes[i]->adj[0]->residual != 1)
 				return false;
@@ -202,7 +206,7 @@ bool Graph::spell_word() { //aka maxflow - NOT FINISHED
 		else
 			break;
 	}
-	return true;
+	return true;*/
 }
 
 void Graph::delete_word_from_graph() {
@@ -321,7 +325,7 @@ int main(int argc, char *argv[]) {
 		graph->add_word_to_graph(word, id, numDice);
 		graph->dump_nodes(); // Dev Note: Delete later
 
-		if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
+		if(graph -> spell_word(word) == false) cout << "Cannot spell " << word << endl;
         //else graph -> print_node_order(word);
 		else cout << "Can spell word" << endl;
 
