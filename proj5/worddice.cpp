@@ -138,6 +138,7 @@ void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back 
 				//nodes[j] -> adj.push_back(edge -> reverse);
             }
         }
+		id += 1;
     }
     nodes.push_back(sink);
 }
@@ -246,28 +247,36 @@ void Graph::delete_word_from_graph() {
 }
 
 void Graph::print_node_order(string word){
-	// Set up spellingIds in order
-	int letterIndex = 0;
-	int wordIndex = 1;
-	for(int i = 1; i < nodes.size(); i++) {
-		wordIndex = i;
-		if(nodes[i]->type == Node::Node_Type::word)
-			break;
-	}
-
-	//while(spellingIds.size() != word.length()) {
-	//}
-
-	// Print
-    /*for (int i = 0; i < spellingIds.size(); i++) {
-		if(i == (int)spellingIds.size() - 1){
-        	cout << spellingIds[i] - min_nodes << ": "; //might need to take out min_nodes
-		}
-		else {
-			cout << spellingIds[i] - min_nodes << ",";
-		}
+    // Set up spellingIds in order
+    int letterIndex = 0;
+    int wordIndex;
+    for(int i = 1; i < nodes.size(); i++) {
+        wordIndex = i;
+        if(nodes[i]->type == Node::Node_Type::word)
+            break;
     }
-	cout << word << endl;*/
+
+    while(word.length() - 1 != letterIndex) {
+        for(int i = wordIndex; i < nodes.size() - 1; i++) {
+            for(int j = 0; j < nodes[i]->adj.size(); j++) {
+                if(nodes[i]->adj[j]->to->id == letterIndex && nodes[i]->adj[j]->original == 0) {
+                    spellingIds.push_back(nodes[i]->id);
+                }
+            }
+        }
+        letterIndex += 1;
+    }
+
+    // Print
+    for (int i = 0; i < spellingIds.size(); i++) {
+        if(i == (int)spellingIds.size() - 1){
+            cout << spellingIds[i] << ": "; //might need to take out min_nodes
+        }
+        else {
+            cout << spellingIds[i] << ",";
+        }
+    }
+    cout << word << endl;
 }
 
 void Graph::dump_nodes() {
@@ -355,7 +364,7 @@ int main(int argc, char *argv[]) {
 		graph->delete_word_from_graph();
 		graph->reset_edges();
 		cout << endl; // Dev Note: Delete later, this is for dump node
-		id += 1;
+		//id += 1;
 	}
 	finW.close();
 
