@@ -195,7 +195,7 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 			current_node = rev -> to;
 		}
 	}
-	cout << "paths not found" << endl;
+	//cout << "paths not found" << endl;
 
 	//if (counter == word.length()) return true;
 	//else return false;
@@ -212,6 +212,19 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 }
 
 void Graph::delete_word_from_graph() {
+	// Delete adj list of dice
+    for(int i = 1; i < nodes.size(); i++) {
+		if(nodes[i]->type == Node::Node_Type::dice) {
+			for(int j = 0; j < nodes[i]->adj.size(); j++) {
+				delete nodes[i]->adj[j];
+			}
+			nodes[i]->adj.clear();
+		}
+		else
+			break;
+    }
+
+	// Delete word nodes and sink
 	int count = 0;
     for(int i = nodes.size() - 1; i > 1; i--) {
         if(nodes[i]->type == Node::Node_Type::sink || nodes[i]->type == Node::Node_Type::word) {
@@ -223,14 +236,6 @@ void Graph::delete_word_from_graph() {
     }
 	nodes.resize(nodes.size() - count);
     //cout << "Nodes vector size: " << nodes.size() << endl; // Dev Notes: For testing only
-	
-	// Delete adj list of dice
-    for(int i = 1; i < nodes.size(); i++) {
-		for(int j = 0; j < nodes[i]->adj.size(); j++) {
-			delete nodes[i]->adj[j];
-		}
-		nodes[i]->adj.clear();
-    }
 }
 
 void Graph::print_node_order(string word){
@@ -288,13 +293,13 @@ void Graph::dump_nodes() {
         cout << endl;
     }
 	
-	int wordIndex;
+	/*int wordIndex;
 	for(int i = 0; i < nodes.size() - 1; i++) {
         wordIndex = i;
         if(nodes[i]->type == Node::Node_Type::word)
             break;
     }
-    cout << "Word Index: " << wordIndex << endl;
+    cout << "Word Index: " << wordIndex << endl;*/
 }
 
 int main(int argc, char *argv[]) {
