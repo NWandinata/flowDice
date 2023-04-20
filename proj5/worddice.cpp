@@ -176,6 +176,8 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 	int counter = 0; //may not need
 
 	while(BFS()){
+		counter++;
+		if (counter == word.length()) return true;
 		//Node *current_node = new Node;
 		//current_node = sink;
 		Node *current_node = sink;
@@ -192,11 +194,11 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 
 			current_node = rev -> to;
 		}
-		counter++;
 	}
+	cout << "paths not found" << endl;
 
-	if (counter == word.length()) return true;
-	else return false;
+	//if (counter == word.length()) return true;
+	//else return false;
 
 	/*for(int i = nodes.size() - 2; i > 1; i--) {
 		if(nodes[i]->type == Node::Node_Type::word) {
