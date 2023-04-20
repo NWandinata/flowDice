@@ -176,8 +176,9 @@ bool Graph::spell_word() { //aka maxflow - NOT FINISHED
 	int total_flow = 0; //may not need
 
 	while(BFS()){
-		Node *current_node = new Node;
-		current_node = sink;
+		//Node *current_node = new Node;
+		//current_node = sink;
+		Node *current_node = sink;
 		
 		while(current_node != source){
 			Edge *back = current_node -> backedge;
@@ -192,6 +193,16 @@ bool Graph::spell_word() { //aka maxflow - NOT FINISHED
 			current_node = rev -> to;
 		}
 	}
+
+	for(int i = nodes.size() - 2; i > 1; i--) {
+		if(nodes[i]->type == Node::Node_Type::word) {
+			if(nodes[i]->adj[0]->residual != 1)
+				return false;
+		}
+		else
+			break;
+	}
+	return true;
 }
 
 void Graph::delete_word_from_graph() {
@@ -216,9 +227,15 @@ void Graph::delete_word_from_graph() {
     }
 }
 
-
-/*void Graph::print_node_order(string word){
-    for (int i = 0; i < spellingIds.size(); i++) {
+void Graph::print_node_order(string word){
+	for(int i = nodes.size() - 2; i > 1; i--) {
+        if(nodes[i]->type == Node::Node_Type::word) {
+			spellingIds.push_back(//reverse edge);
+        }
+        else
+            break;
+    }
+    /*for (int i = 0; i < spellingIds.size(); i++) {
 		if(i == (int)spellingIds.size() - 1){
         	cout << spellingIds[i] - min_nodes << ": "; //might need to take out min_nodes
 		}
@@ -226,9 +243,8 @@ void Graph::delete_word_from_graph() {
 			cout << spellingIds[i] - min_nodes << ",";
 		}
     }
-	cout << word << endl;
-}*/
-
+	cout << word << endl;*/
+}
 
 void Graph::dump_nodes() {
 	string nodeType = "Missing Type";
@@ -292,7 +308,7 @@ int main(int argc, char *argv[]) {
 		graph->dump_nodes(); // Dev Note: Delete later
 
 		if(graph -> spell_word() == false) cout << "Cannot spell " << word << endl;
-        //else graph -> print_node_order(word);
+        else graph -> print_node_order(word);
 
 		graph->delete_word_from_graph();
 		cout << endl; // Dev Note: Delete later, this is for dump node
