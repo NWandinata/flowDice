@@ -53,6 +53,7 @@ class Graph{
 	 void delete_word_from_graph(); //deletes the word nodes but leaves the dice nodes
 	 void print_node_order(string word); //print spelling Ids and word
 	 void dump_nodes(); // Only use for debugging
+	 void reset_edges();
 };
 
 // reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
@@ -308,6 +309,15 @@ void Graph::dump_nodes() {
     cout << "Word Index: " << wordIndex << endl;*/
 }
 
+void Graph::reset_edges() {
+	for(int i = 0; i < source->adj.size(); i++) {
+		source->adj[i]->original = 1;
+		source->adj[i]->residual = 0;
+		source->adj[i]->reverse->original = 0;
+		source->adj[i]->reverse->residual = 0;
+	}
+}
+
 int main(int argc, char *argv[]) {
 	string word, die;
 	int id = 0;
@@ -343,6 +353,7 @@ int main(int argc, char *argv[]) {
 		else cout << "Can spell word" << endl;
 
 		graph->delete_word_from_graph();
+		graph->reset_edges();
 		cout << endl; // Dev Note: Delete later, this is for dump node
 		id += 1;
 	}
