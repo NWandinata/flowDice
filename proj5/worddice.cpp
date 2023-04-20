@@ -126,13 +126,15 @@ void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back 
         Node* node = new Node(id, Node::word, let);
         nodes.push_back(node);
         Edge* edge = new Edge(sink, node, true);//add edges later connect to source
-        node -> adj.push_back(edge); //adds to adjacency list; might need to fix
+        node -> adj.push_back(edge); //adds to adjacency list;
+		//node -> adj.push_back(edge -> reverse);
 
 
         for(int j = 1; j <= numDice; j++){
             if(has_letter(word[i], nodes[j])){ //if a letter in the die matches the asking letter
                 Edge* edge = new Edge(node, nodes[j], true);//add edges later connect to source
                 nodes[j] -> adj.push_back(edge); //adds to adjacency list; might need to fix
+				//nodes[j] -> adj.push_back(edge -> reverse);
             }
         }
     }
