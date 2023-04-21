@@ -25,8 +25,7 @@ class Node{
 		typedef enum Node_Type {source, sink, word, dice};
 		Node(int id, Node_Type type, string word = ""); //constructor for nodes
 		~Node(); //default destructor
-		friend bool has_letter(char c, Node *die);
-		//friend ostream& operator<<(ostream& os, const Node& node); // Dev Note: Probably unnecessary
+		friend bool has_letter(char c, Node *node);
 		int id; //node id
 		Node_Type type; //type of node it is (source, sink, word or dice)
 		vector<bool> letters; //length 26 with letters contained in word set to 1
@@ -44,7 +43,7 @@ class Graph{
 	 vector<Node *> nodes; //holds the nodes
 	 vector<int> spellingIds; //order of flow to spell word
 	 vector<string> dice; // Dev Note: Delete later, for dump_node
-	 int min_nodes; //min number of dice nodes
+	 //int min_nodes; //min number of dice nodes
 	 string word;
 	 void add_dice_to_graph(string die, int id); //add dice nodes to graph
 	 void add_word_to_graph(string word, int id, int numDice); //add word (letter) nodes to graph
@@ -56,7 +55,7 @@ class Graph{
 	 void reset_edges();
 };
 
-// reverse_edge = true - The edge is a reverse edge
+// Sets up the flow for forward and reverse edges
 Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	this->to = to;
 	this->from = from;
@@ -82,8 +81,9 @@ Node::Node(int id, Node_Type type, string word) {
         letters[word[i] - 65] = true;
 }
 
-bool has_letter(char c, Node *die) {
-    return die->letters[c - 65];
+// Checks if a node contains a specific letter 
+bool has_letter(char c, Node *node) {
+    return node->letters[c - 65];
 }
 
 Node::~Node() {
@@ -94,7 +94,7 @@ Node::~Node() {
 Graph::Graph(){
     source = new Node(-1, Node::source, "");
     sink = NULL;
-    min_nodes = 0;
+    //min_nodes = 0;
 	nodes.push_back(source);
 }
 
@@ -178,29 +178,29 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 	return false;
 }
 
-bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
-	int counter = 0; //may not need
+bool Graph::spell_word(string word) { 
+	int counter = 0;
 
 	while(BFS()){
-		counter++;
-		if (counter == word.length()) return true;
+		//counter++;
+		//if (counter == word.length()) return true;
 		Node *current_node = sink;
 		
 		while(current_node != source){
-			// Instead of setting original and residual manually, try using swap()
 			Edge *back = current_node -> backedge;
-			//back -> original = 0;
-			//back -> residual = 1;
 			swap(back->original, back->residual);
 
 			Edge *rev = back -> reverse;
-			//rev -> residual = 0;
-			//rev -> original = 1;
 			swap(rev->original, rev->residual);
 
 			current_node = rev -> to;
 		}
+
+		counter++;
+        if (counter == word.length()) return true;
 	}
+
+	// return false;
 }
 
 // Note: After deleting reverse edges of dice, may need to reconnect them to source in reset_edges
