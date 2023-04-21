@@ -83,8 +83,6 @@ Node::Node(int id, Node_Type type, string word) {
     // Uses ASCII table to find each letter's corresponding index
     for(int i = 0; i < word.length(); i++)
         letters[word[i] - 65] = true;
-
-    // Dev Note: Setup backedge based on node type (maybe not necessary)
 }
 
 bool has_letter(char c, Node *die) {
@@ -112,8 +110,6 @@ Graph::~Graph(){
 
 void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
     Node* node = new Node(id, Node::dice, die);
-	//Edge(node, source, true);//add edges later connect to source
-	//source -> adj.push_back(node); //adds to adjacency list; might need to fix
 	Edge* edge = new Edge(node, source, true);//add edges later connect to source
     source -> adj.push_back(edge); //adds to adjacency list; might need to fix
 	nodes.push_back(node);//add to Nodes vector
@@ -215,6 +211,7 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 	return true;*/
 }
 
+// Note: After deleting reverse edges of dice, may need to reconnect them to source in reset_edges
 void Graph::delete_word_from_graph() {
 	// Delete adj list of dice
     for(int i = 1; i < nodes.size(); i++) {
@@ -233,7 +230,6 @@ void Graph::delete_word_from_graph() {
 	int count = 0;
     for(int i = nodes.size() - 1; i > 1; i--) {
         if(nodes[i]->type == Node::Node_Type::sink || nodes[i]->type == Node::Node_Type::word) {
-            
 			delete nodes[i];
 			count += 1;
 		}
@@ -319,11 +315,18 @@ void Graph::dump_nodes() {
 }
 
 void Graph::reset_edges() {
+	int index = 1;
 	for(int i = 0; i < source->adj.size(); i++) {
 		source->adj[i]->original = 1; //1
 		source->adj[i]->residual = 0; //0
 		source->adj[i]->reverse->original = 0; //0
 		source->adj[i]->reverse->residual = 1; //1
+		
+		// Reset reverse edges of dice
+		//nodes[index]->adj.push_back(source->adj[i]->reverse);
+		//Edge* rev = new Edge(source, nodes[index], false);
+		//nodes[index]->adj.push_back(rev);
+		//index += 1;
 	}
 }
 
@@ -358,9 +361,13 @@ int main(int argc, char *argv[]) {
 
 		if(graph -> spell_word(word) == false) cout << "Cannot spell " << word << endl;
         //else graph -> print_node_order(word, numDice);
-		else cout << "Can spell word" << endl;
+		else cout << "Can spell " << word << endl;
 
+		cout << endl;
 		graph->delete_word_from_graph();
+		cout << "Graph after delete word:" << endl;
+		graph->dump_nodes();
+
 		graph->reset_edges();
 		cout << endl; // Dev Note: Delete later, this is for dump node
 		//id += 1;
