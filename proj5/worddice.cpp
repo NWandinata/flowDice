@@ -62,13 +62,13 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	this->to = to;
 	this->from = from;
 	if(reverse_edge) {
-		original = 1; //1
-		residual = 0; //0
+		original = 1; 
+		residual = 0; 
 		reverse = new Edge(from, to, false);
 	}
 	else {
-		original = 0; //0
-		residual = 1; //1
+		original = 0; 
+		residual = 1; 
 		// Dev Note: Need to find a way to set reverse of the reverse to original
 	}
 }
@@ -245,15 +245,17 @@ void Graph::delete_word_from_graph() {
 void Graph::print_node_order(string word, int numDice){
     // Set up spellingIds in order
 	int wordIndex;
+	cout << "To node ID: weight (of all word nodes)" << endl;
 	for(int i = 0; i < word.length(); i++) {
 		wordIndex = numDice + 1 + i;
 		for(int j = 0; j < nodes[wordIndex]->adj.size(); j++) {
-			cout << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
+			cout << "Word node " << i << " - " << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
 			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice)
 				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
 		}
 		cout << endl;
 	}
+	cout << "To node ID: weight (of last dice node)" << endl;
 	for(int i = 0; i < nodes[numDice]->adj.size(); i++) {
 		cout << nodes[numDice]->adj[i]->to->id << ": " << nodes[numDice]->adj[i]->original << ", ";
 	}
