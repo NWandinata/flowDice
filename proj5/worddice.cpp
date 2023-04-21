@@ -1,3 +1,8 @@
+/*Nicholas Wandinata and Makenzie Johnson
+ * project 5
+ * cs 302
+ * 4-21-23*/
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -14,7 +19,7 @@ class Edge{
         class Node *to; //node edge is pointing to
         class Node *from; //node edge is pointing from
         Edge(class Node *to, class Node *from, bool reverse_edge = false); //constructor for edges
-        ~Edge(){}; //default destructor // Dev Note: LEAVE THIS ALONE
+        ~Edge(){}; //default destructor
         Edge *reverse; //edge going the other way
         int original; //original weight per edge
         int residual; //allows for updated weighting during Edmonds-Karp
@@ -22,7 +27,7 @@ class Edge{
 
 class Node{
 	public:
-		typedef enum Node_Type {source, sink, word, dice};
+		enum Node_Type {source, sink, word, dice};
 		Node(int id, Node_Type type, string word = ""); //constructor for nodes
 		~Node(); //default destructor
 		friend bool has_letter(char c, Node *node);
@@ -42,8 +47,6 @@ class Graph{
 	 Node *sink;
 	 vector<Node *> nodes; //holds the nodes
 	 vector<int> spellingIds; //order of flow to spell word
-	 vector<string> dice; // Dev Note: Delete later, for dump_node
-	 //int min_nodes; //min number of dice nodes
 	 string word;
 	 void add_dice_to_graph(string die, int id); //add dice nodes to graph
 	 void add_word_to_graph(string word, int id, int numDice); //add word (letter) nodes to graph
@@ -77,7 +80,7 @@ Node::Node(int id, Node_Type type, string word) {
         letters.push_back(false);
 
     // Uses ASCII table to find each letter's corresponding index
-    for(int i = 0; i < word.length(); i++)
+    for(int i = 0; i < (int)word.length(); i++)
         letters[word[i] - 65] = true;
 }
 
@@ -87,14 +90,13 @@ bool has_letter(char c, Node *node) {
 }
 
 Node::~Node() {
-	for(int i = 0; i < adj.size(); i++)
+	for(int i = 0; i < (int)adj.size(); i++)
 		delete adj[i];
 }
 
 Graph::Graph(){
     source = new Node(-1, Node::source, "");
     sink = NULL;
-    //min_nodes = 0;
 	nodes.push_back(source);
 }
 
@@ -104,27 +106,27 @@ Graph::~Graph(){
     }
 }
 
-
-void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
+//add to Node vector and adjacency list
+void Graph::add_dice_to_graph(string die, int id){
     Node* node = new Node(id, Node::dice, die);
-	Edge* edge = new Edge(node, source, false);//add edges later connect to source
+	Edge* edge = new Edge(node, source, false);
     Edge *rev = new Edge(source, node, true);
 	edge -> reverse = rev;
 	rev -> reverse = edge;
 	node -> adj.push_back(rev);
-	source -> adj.push_back(edge); //adds to adjacency list; might need to fix
-	nodes.push_back(node);//add to Nodes vector
+	source -> adj.push_back(edge); //adds to adjacency list;
+	nodes.push_back(node);
 }
 
-
-void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back in if things don't work
+ // iterate over each index in the string 'word' and allocate each letter in the word
+void Graph::add_word_to_graph(string word, int id, int numDice){
 	sink = new Node(-2, Node::sink, "");
-    for (int i = 0; i < word.size(); i++) {  // iterate over each index in the string 'word' and allocate each letter in the word
+    for (int i = 0; i < (int)word.size(); i++) {
         string let(1, word[i]);
         Node* node = new Node(id, Node::word, let);
         nodes.push_back(node);
-        Edge* edge = new Edge(sink, node, false);//add edges later connect to source
-		Edge* rev = new Edge(node, sink, true);
+        Edge* edge = new Edge(sink, node, false); //add edge to connect from word to sink
+		Edge* rev = new Edge(node, sink, true);	//add reverse to connect from sink to word
 		edge->reverse = rev;
 		rev->reverse = edge;
         node->adj.push_back(edge); //adds to adjacency list;
@@ -132,11 +134,11 @@ void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back 
 
         for(int j = 1; j <= numDice; j++){
             if(has_letter(word[i], nodes[j])){ //if a letter in the die matches the asking letter
-                Edge* edge = new Edge(node, nodes[j], false);//add edges later connect to source
+                Edge* edge = new Edge(node, nodes[j], false); //add edges later connect to source
 				Edge* rev = new Edge(nodes[j], node, true);
 				edge->reverse = rev;
 				rev->reverse = edge;
-                nodes[j]->adj.push_back(edge); //adds to adjacency list; might need to fix
+                nodes[j]->adj.push_back(edge);
 				node->adj.push_back(rev);
             }
         }
@@ -178,12 +180,13 @@ bool Graph::BFS(){ //spell_word() function, which uses the Edmonds-Karp algorith
 	return false;
 }
 
+//While BFS is true, we start on sink and work our way backwards. The counter keeps track of how many letters
+//are connectes with the dice. If the counter matches the word length, then we can spell the word.
+
 bool Graph::spell_word(string word) { 
 	int counter = 0;
 
 	while(BFS()){
-		//counter++;
-		//if (counter == word.length()) return true;
 		Node *current_node = sink;
 		
 		while(current_node != source){
@@ -197,17 +200,18 @@ bool Graph::spell_word(string word) {
 		}
 
 		counter++;
-        if (counter == word.length()) return true;
+        if (counter == (int)word.length()) return true;
 	}
 
 	return false;
 }
 
-// Note: After deleting reverse edges of dice, may need to reconnect them to source in reset_edges
+// We delete edges of dice, word, and sink. Then delete word and sink nodes.
 void Graph::delete_word_from_graph() {
+
 	// Delete adj list of dice
-    for(int i = 1; i < nodes.size(); i++) {
-		for(int j = 0; j < nodes[i]->adj.size(); j++) {
+    for(int i = 1; i < (int)nodes.size(); i++) {
+		for(int j = 0; j < (int)nodes[i]->adj.size(); j++) {
 			delete nodes[i]->adj[j];
 		}
 		nodes[i]->adj.clear();
@@ -226,35 +230,25 @@ void Graph::delete_word_from_graph() {
 	nodes.resize(nodes.size() - count);
 }
 
+//This sets up spellingIds in order. We first check the reverse edges of the word nodes. If they have a flow of 1, the path was taken.
 void Graph::print_node_order(string word, int numDice){
-    // Set up spellingIds in order
 	int wordIndex;
-	cout << "To node ID: weight (of all word nodes)" << endl;
 
-	for(int i = 0; i < word.length(); i++) {
+	for(int i = 0; i < (int)word.length(); i++) {
 		wordIndex = numDice + 1 + i;
 
-		for(int j = 0; j < nodes[wordIndex]->adj.size(); j++) {
-			cout << "Word node " << i << " - " << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
+		for(int j = 0; j < (int)nodes[wordIndex]->adj.size(); j++) {
 
 			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice) {
 				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
-				cout << "Pushing " << nodes[wordIndex]->adj[j]->to->id << ", ";
 			}
 		}
-		cout << endl;
 	}
-
-	cout << "To node ID: weight (of last dice node)" << endl;
-	for(int i = 0; i < nodes[numDice]->adj.size(); i++) {
-		cout << nodes[numDice]->adj[i]->to->id << ": " << nodes[numDice]->adj[i]->original << ", ";
-	}
-	cout << endl;
 
     // Print
-    for (int i = 0; i < spellingIds.size(); i++) {
+    for (int i = 0; i < (int)spellingIds.size(); i++) {
         if(i == (int)spellingIds.size() - 1){
-            cout << spellingIds[i] << ": "; //might need to take out min_nodes
+            cout << spellingIds[i] << ": ";
         }
         else {
             cout << spellingIds[i] << ",";
@@ -264,39 +258,8 @@ void Graph::print_node_order(string word, int numDice){
 	spellingIds.clear();
 }
 
-void Graph::dump_nodes() {
-	string nodeType = "Missing Type";
-	int count = 0;
-    for (int i = 0; i < nodes.size(); i++) {
-        if(nodes[i]->type == Node::Node_Type::source) nodeType = "SOURCE";
-        else if(nodes[i]->type == Node::Node_Type::sink) nodeType = "SINK";
-
-        else if(nodes[i]->type == Node::Node_Type::word) {
-			nodeType.clear();
-			for(int x = 0; x < nodes[i]->letters.size(); x++) {
-				if(nodes[i]->letters[x] == true)
-					nodeType.push_back((char)(x + 65));
-			}
-		}
-
-        else if(nodes[i]->type == Node::Node_Type::dice) {
-			nodeType = dice[count];
-			count += 1;
-		}
-
-        cout << "Node " << i << ": " << nodeType << " Edges to ";
-        for(int j = 0; j < nodes[i]->adj.size(); j++) {
-			int nodeNum = -1;
-			for(int k = 0; k < nodes.size(); k++)
-				if(nodes[i]->adj[j]->to == nodes[k]) nodeNum = k;
-            cout << nodeNum << " ";
-		}
-        cout << endl;
-    }
-}
-
 void Graph::reset_edges() {
-	for(int i = 0; i < source->adj.size(); i++) {
+	for(int i = 0; i < (int)source->adj.size(); i++) {
 		// Reset flow values of source edges
 		source->adj[i]->original = 1;
         source->adj[i]->residual = 0;
@@ -308,6 +271,9 @@ void Graph::reset_edges() {
 		nodes[i + 1]->adj.push_back(rev);
 	}
 }
+
+//We read in dice and word separately and add them to the graph. We call the corresponding functions and the while loop
+//will continue until something returns false.
 
 int main(int argc, char *argv[]) {
 	string word, die;
@@ -324,7 +290,6 @@ int main(int argc, char *argv[]) {
 		if(finD.eof())
 			break;
 		graph->add_dice_to_graph(die, id);
-		graph->dice.push_back(die); // Dev Note: Delete later, for dump_node
 		numDice += 1;
 		id += 1;
 	}
@@ -336,22 +301,11 @@ int main(int argc, char *argv[]) {
 		if(finW.eof())
             break;
 		graph->add_word_to_graph(word, id, numDice);
-		graph->dump_nodes(); // Dev Note: Delete later
 
 		if(graph -> spell_word(word) == false) cout << "Cannot spell " << word << endl;
         else graph -> print_node_order(word, numDice);
-		//else cout << "Can spell " << word << endl;
-
-		cout << endl;
 		graph->delete_word_from_graph();
-		//cout << "Graph after delete word:" << endl;
-		//graph->dump_nodes();
-
 		graph->reset_edges();
-		//cout << endl;
-		//cout << "Graph after reset: " << endl;
-		//graph->dump_nodes();
-		cout << endl; // Dev Note: Delete later, this is for dump node
 	}
 	finW.close();
 

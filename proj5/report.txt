@@ -1,0 +1,13 @@
+Group Members: Makenzie Johnson and Nicholas Wandinata
+
+Makenzie: Worked on and debugged Graph functions. Also commented.
+
+Nicholas: Worked on Node and Edge functions, as well as, the print_node function. Debugged Graph as well.
+
+1. What is complexity of your implementation?
+
+Our time complexity is O(|V| * E^N). One of our main data structures we used were vectors. The vectors allowed us to
+connect our nodes and edges (forward and reverse). The vectors (specifically the adjacency list) helped with traversing the graph.
+Each time we access the edge, the time complexity gets multiplied by O(E). Thus, if we access the edges 'n' times, we have a time complexity of O(E^N).
+The time complexity of our graph always depends on the amount vertices we need. Therefore, we get O(|V| * E^N). Each of the vertices we have needs to create
+and access the edges.
