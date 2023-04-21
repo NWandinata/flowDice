@@ -95,7 +95,7 @@ Node::~Node() {
 }
 
 Graph::Graph(){
-    source = new Node(0, Node::source, "");
+    source = new Node(-1, Node::source, "");
     sink = NULL;
     min_nodes = 0;
 	nodes.push_back(source);
@@ -118,7 +118,7 @@ void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vector
 
 
 void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back in if things don't work
-	sink = new Node(0, Node::sink, "");
+	sink = new Node(-2, Node::sink, "");
     for (int i = 0; i < word.size(); i++) {  // iterate over each index in the string 'word' and allocate each letter in the word
         string let(1, word[i]);
         Node* node = new Node(id, Node::word, let);
@@ -242,24 +242,16 @@ void Graph::delete_word_from_graph() {
 
 void Graph::print_node_order(string word, int numDice){
     // Set up spellingIds in order
-    int letterIndex = 0;
-    /*int wordIndex;
-    for(int i = 1; i < nodes.size(); i++) {
-        wordIndex = i;
-        if(nodes[i]->type == Node::Node_Type::word)
-            break;
-    }*/
-
-    while(word.length() - 1 != letterIndex) {
-        for(int i = 1; i <= numDice; i++) {
-            for(int j = 0; j < nodes[i]->adj.size(); j++) {
-                if(nodes[i]->adj[j]->to->id == letterIndex && nodes[i]->adj[j]->original == 0) {
-                    spellingIds.push_back(nodes[i]->id);
-                }
-            }
-        }
-        letterIndex += 1;
-    }
+	int wordIndex;
+	for(int i = 0; i < word.length(); i++) {
+		// 1st word index = numDice + 1
+		// Iterative word index = numDice + 1 + i
+		wordIndex = numDice + 1 + i;
+		for(int j = 0; j < nodes[wordIndex]->adj.size(); j++) {
+			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice)
+				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
+		}
+	}
 
     // Print
     for (int i = 0; i < spellingIds.size(); i++) {
@@ -358,8 +350,8 @@ int main(int argc, char *argv[]) {
 		graph->dump_nodes(); // Dev Note: Delete later
 
 		if(graph -> spell_word(word) == false) cout << "Cannot spell " << word << endl;
-        //else graph -> print_node_order(word, numDice);
-		else cout << "Can spell " << word << endl;
+        else graph -> print_node_order(word, numDice);
+		//else cout << "Can spell " << word << endl;
 
 		//cout << endl;
 		graph->delete_word_from_graph();
