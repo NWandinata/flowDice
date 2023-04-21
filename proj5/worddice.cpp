@@ -227,8 +227,12 @@ void Graph::delete_word_from_graph() {
 	// Delete adj list of dice
     for(int i = 1; i < nodes.size(); i++) {
 		for(int j = 0; j < nodes[i]->adj.size(); j++) {
-			delete nodes[i]->adj[j]->reverse; // May or may not need
-			delete nodes[i]->adj[j];
+			//if(nodes[i]->adj[j]->to == source)
+				//continue;
+			//else {
+				//delete nodes[i]->adj[j]->reverse; // May or may not need
+				delete nodes[i]->adj[j];
+			//}
 		}
 		nodes[i]->adj.clear();
     }
@@ -243,10 +247,7 @@ void Graph::delete_word_from_graph() {
         else
             break;
     }
-
-	//cout << "Nodes vector size: " << nodes.size() - count << endl;
 	nodes.resize(nodes.size() - count);
-    //cout << "Nodes vector size: " << nodes.size() << endl; // Dev Notes: For testing only
 }
 
 void Graph::print_node_order(string word, int numDice){
@@ -323,20 +324,24 @@ void Graph::dump_nodes() {
 }
 
 void Graph::reset_edges() {
-	int index = 1;
 	for(int i = 0; i < source->adj.size(); i++) {
-		source->adj[i]->original = 1; //1
-		source->adj[i]->residual = 0; //0
-		source->adj[i]->reverse->original = 0; //0
-		source->adj[i]->reverse->residual = 1; //1
+		source->adj[i]->original = 1;
+        source->adj[i]->residual = 0;
 
-		//Edge *edge = new Edge(
-		
-		// Reset reverse edges of dice
-		//nodes[index]->adj.push_back(source->adj[i]->reverse);
-		//Edge* rev = new Edge(source, nodes[index], false);
-		//nodes[index]->adj.push_back(rev);
-		//index += 1;
+		Edge *rev = new Edge(source, nodes[i + 1], true);
+		source->adj[i]->reverse = rev;
+		rev->reverse = source->adj[i];
+		nodes[i + 1]->adj.push_back(rev);
+
+		/*source->adj[i]->original = 1; 
+		source->adj[i]->residual = 0; 
+		source->adj[i]->reverse->original = 0; 
+		source->adj[i]->reverse->residual = 1; 
+
+		nodes[i + 1]->adj[0]->original = 0;
+		nodes[i + 1]->adj[0]->residual = 1;
+		nodes[i + 1]->adj[0]->reverse->original = 1;
+		nodes[i + 1]->adj[0]->reverse->residual = 0;*/
 	}
 }
 
@@ -373,12 +378,15 @@ int main(int argc, char *argv[]) {
         else graph -> print_node_order(word, numDice);
 		//else cout << "Can spell " << word << endl;
 
-		//cout << endl;
+		cout << endl;
 		graph->delete_word_from_graph();
-		//cout << "Graph after delete word:" << endl;
-		//graph->dump_nodes();
+		cout << "Graph after delete word:" << endl;
+		graph->dump_nodes();
 
 		graph->reset_edges();
+		cout << endl;
+		cout << "Graph after reset: " << endl;
+		graph->dump_nodes();
 		cout << endl; // Dev Note: Delete later, this is for dump node
 		//id += 1;
 	}
