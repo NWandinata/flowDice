@@ -1,0 +1,10 @@
+Cannot spell CHOIR
+8,4,2,0,3: GEESE
+Cannot spell SIREN
+Cannot spell BORN
+9,0,8: BUS
+Cannot spell SIGHT
+Cannot spell ILEUM
+7,1,0,3: VAST
+Cannot spell DRAWL
+Cannot spell ACORN

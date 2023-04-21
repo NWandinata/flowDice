@@ -1,0 +1,186 @@
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 
+Node 2: ARWO Edges to 13 15 
+Node 3: EFJP Edges to 
+Node 4: ETXR Edges to 15 
+Node 5: EYMD Edges to 
+Node 6: RXFM Edges to 15 
+Node 7: PCQR Edges to 11 15 
+Node 8: MEVK Edges to 
+Node 9: SEZG Edges to 
+Node 10: IBPZ Edges to 14 
+Node 11: C Edges to 16 7 
+Node 12: H Edges to 16 
+Node 13: O Edges to 16 2 
+Node 14: I Edges to 16 10 
+Node 15: R Edges to 16 2 4 6 7 
+Node 16: SINK Edges to 11 12 13 14 15 
+Cannot spell CHOIR
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 12 13 14 15 
+Node 2: ARWO Edges to 
+Node 3: EFJP Edges to 12 13 15 
+Node 4: ETXR Edges to 12 13 15 
+Node 5: EYMD Edges to 12 13 15 
+Node 6: RXFM Edges to 
+Node 7: PCQR Edges to 
+Node 8: MEVK Edges to 12 13 15 
+Node 9: SEZG Edges to 11 12 13 14 15 
+Node 10: IBPZ Edges to 
+Node 11: G Edges to 16 9 
+Node 12: E Edges to 16 1 3 4 5 8 9 
+Node 13: E Edges to 16 1 3 4 5 8 9 
+Node 14: S Edges to 16 1 9 
+Node 15: E Edges to 16 1 3 4 5 8 9 
+Node 16: SINK Edges to 11 12 13 14 15 
+To node ID: weight (of all word nodes)
+Word node 0 - -2: 0, Word node 0 - 8: 1, Pushing 8
+Word node 1 - -2: 0, Word node 1 - 0: 1, Pushing 0Word node 1 - 2: 0, Word node 1 - 3: 0, Word node 1 - 4: 0, Word node 1 - 7: 0, Word node 1 - 8: 0, 
+Word node 2 - -2: 0, Word node 2 - 0: 0, Word node 2 - 2: 1, Pushing 2Word node 2 - 3: 0, Word node 2 - 4: 0, Word node 2 - 7: 0, Word node 2 - 8: 0, 
+Word node 3 - -2: 1, Word node 3 - 0: 0, Word node 3 - 8: 0, 
+Word node 4 - -2: 0, Word node 4 - 0: 0, Word node 4 - 2: 0, Word node 4 - 3: 1, Pushing 3Word node 4 - 4: 0, Word node 4 - 7: 0, Word node 4 - 8: 0, 
+To node ID: weight (of last dice node)
+
+8,0,2,3: GEESE
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 11 14 
+Node 2: ARWO Edges to 13 
+Node 3: EFJP Edges to 14 
+Node 4: ETXR Edges to 13 14 
+Node 5: EYMD Edges to 14 
+Node 6: RXFM Edges to 13 
+Node 7: PCQR Edges to 13 
+Node 8: MEVK Edges to 14 
+Node 9: SEZG Edges to 11 14 
+Node 10: IBPZ Edges to 12 
+Node 11: S Edges to 16 1 9 
+Node 12: I Edges to 16 10 
+Node 13: R Edges to 16 2 4 6 7 
+Node 14: E Edges to 16 1 3 4 5 8 9 
+Node 15: N Edges to 16 
+Node 16: SINK Edges to 11 12 13 14 15 
+Cannot spell SIREN
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 
+Node 2: ARWO Edges to 12 13 
+Node 3: EFJP Edges to 
+Node 4: ETXR Edges to 13 
+Node 5: EYMD Edges to 
+Node 6: RXFM Edges to 13 
+Node 7: PCQR Edges to 13 
+Node 8: MEVK Edges to 
+Node 9: SEZG Edges to 
+Node 10: IBPZ Edges to 11 
+Node 11: B Edges to 15 10 
+Node 12: O Edges to 15 2 
+Node 13: R Edges to 15 2 4 6 7 
+Node 14: N Edges to 15 
+Node 15: SINK Edges to 11 12 13 14 
+Cannot spell BORN
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 12 13 
+Node 2: ARWO Edges to 
+Node 3: EFJP Edges to 
+Node 4: ETXR Edges to 
+Node 5: EYMD Edges to 
+Node 6: RXFM Edges to 
+Node 7: PCQR Edges to 
+Node 8: MEVK Edges to 
+Node 9: SEZG Edges to 13 
+Node 10: IBPZ Edges to 11 
+Node 11: B Edges to 14 10 
+Node 12: U Edges to 14 1 
+Node 13: S Edges to 14 1 9 
+Node 14: SINK Edges to 11 12 13 
+To node ID: weight (of all word nodes)
+Word node 0 - -2: 1, Word node 0 - 9: 0, 
+Word node 1 - -2: 0, Word node 1 - 0: 1, Pushing 0
+Word node 2 - -2: 0, Word node 2 - 0: 0, Word node 2 - 8: 1, Pushing 8
+To node ID: weight (of last dice node)
+0: 1, 
+0,8: BUS
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 11 
+Node 2: ARWO Edges to 
+Node 3: EFJP Edges to 
+Node 4: ETXR Edges to 15 
+Node 5: EYMD Edges to 
+Node 6: RXFM Edges to 
+Node 7: PCQR Edges to 
+Node 8: MEVK Edges to 
+Node 9: SEZG Edges to 11 13 
+Node 10: IBPZ Edges to 12 
+Node 11: S Edges to 16 1 9 
+Node 12: I Edges to 16 10 
+Node 13: G Edges to 16 9 
+Node 14: H Edges to 16 
+Node 15: T Edges to 16 4 
+Node 16: SINK Edges to 11 12 13 14 15 
+Cannot spell SIGHT
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 13 14 
+Node 2: ARWO Edges to 
+Node 3: EFJP Edges to 13 
+Node 4: ETXR Edges to 13 
+Node 5: EYMD Edges to 13 15 
+Node 6: RXFM Edges to 15 
+Node 7: PCQR Edges to 
+Node 8: MEVK Edges to 13 15 
+Node 9: SEZG Edges to 13 
+Node 10: IBPZ Edges to 11 
+Node 11: I Edges to 16 10 
+Node 12: L Edges to 16 
+Node 13: E Edges to 16 1 3 4 5 8 9 
+Node 14: U Edges to 16 1 
+Node 15: M Edges to 16 5 6 8 
+Node 16: SINK Edges to 11 12 13 14 15 
+Cannot spell ILEUM
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 13 
+Node 2: ARWO Edges to 12 
+Node 3: EFJP Edges to 
+Node 4: ETXR Edges to 14 
+Node 5: EYMD Edges to 
+Node 6: RXFM Edges to 
+Node 7: PCQR Edges to 
+Node 8: MEVK Edges to 11 
+Node 9: SEZG Edges to 13 
+Node 10: IBPZ Edges to 
+Node 11: V Edges to 15 8 
+Node 12: A Edges to 15 2 
+Node 13: S Edges to 15 1 9 
+Node 14: T Edges to 15 4 
+Node 15: SINK Edges to 11 12 13 14 
+To node ID: weight (of all word nodes)
+Word node 0 - -2: 1, Word node 0 - 7: 0, 
+Word node 1 - -2: 0, Word node 1 - 1: 1, Pushing 1
+Word node 2 - -2: 0, Word node 2 - 0: 1, Pushing 0Word node 2 - 8: 0, 
+Word node 3 - -2: 0, Word node 3 - 3: 1, Pushing 3
+To node ID: weight (of last dice node)
+
+1,0,3: VAST
+
+Node 0: SOURCE Edges to 1 2 3 4 5 6 7 8 9 10 
+Node 1: ESUQ Edges to 
+Node 2: ARWO Edges to 12 13 14 
+Node 3: EFJP Edges to 
+Node 4: ETXR Edges to 12 
+Node 5: EYMD Edges to 11 
+Node 6: RXFM Edges to 12 
+Node 7: PCQR Edges to 12 
+Node 8: MEVK Edges to 
+Node 9: SEZG Edges to 
+Node 10: IBPZ Edges to 
+Node 11: D Edges to 16 5 
+Node 12: R Edges to 16 2 4 6 7 
+Node 13: A Edges to 16 2 
+Node 14: W Edges to 16 2 
+Node 15: L Edges to 16 
+Node 16: SINK Edges to 11 12 13 14 15 

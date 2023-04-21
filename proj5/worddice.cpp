@@ -183,14 +183,14 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 		while(current_node != source){
 			// Instead of setting original and residual manually, try using swap()
 			Edge *back = current_node -> backedge;
-			back -> original = 0;
-			back -> residual = 1;
-			//swap(back->original, back->residual);
+			//back -> original = 0;
+			//back -> residual = 1;
+			swap(back->original, back->residual);
 
 			Edge *rev = back -> reverse;
-			rev -> residual = 0;
-			rev -> original = 1;
-			//swap(rev->original, rev->residual);
+			//rev -> residual = 0;
+			//rev -> original = 1;
+			swap(rev->original, rev->residual);
 
 			current_node = rev -> to;
 		}
@@ -252,11 +252,11 @@ void Graph::print_node_order(string word, int numDice){
 			cout << "Word node " << i << " - " << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
 			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice) {
 				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
-				cout << "Pushing " << nodes[wordIndex]->adj[j]->to->id << endl;
+				cout << "Pushing " << nodes[wordIndex]->adj[j]->to->id << ", ";
 			}
 		}
+		cout << endl;
 	}
-	cout << endl;
 	cout << "To node ID: weight (of last dice node)" << endl;
 	for(int i = 0; i < nodes[numDice]->adj.size(); i++) {
 		cout << nodes[numDice]->adj[i]->to->id << ": " << nodes[numDice]->adj[i]->original << ", ";
