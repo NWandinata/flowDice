@@ -111,7 +111,12 @@ Graph::~Graph(){
 void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
     Node* node = new Node(id, Node::dice, die);
 	Edge* edge = new Edge(node, source, false);//add edges later connect to source
-    source -> adj.push_back(edge); //adds to adjacency list; might need to fix
+    Edge *rev = new Edge(source, node, true);
+	edge -> reverse = rev;
+	rev -> reverse = edge;
+	node -> adj.push_back(rev);
+
+	source -> adj.push_back(edge); //adds to adjacency list; might need to fix
 	nodes.push_back(node);//add to Nodes vector
 	//node->adj.push_back(edge->reverse);
 }
@@ -324,6 +329,8 @@ void Graph::reset_edges() {
 		source->adj[i]->residual = 0; //0
 		source->adj[i]->reverse->original = 0; //0
 		source->adj[i]->reverse->residual = 1; //1
+
+		//Edge *edge = new Edge(
 		
 		// Reset reverse edges of dice
 		//nodes[index]->adj.push_back(source->adj[i]->reverse);
