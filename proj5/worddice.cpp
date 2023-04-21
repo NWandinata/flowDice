@@ -181,14 +181,16 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 		Node *current_node = sink;
 		
 		while(current_node != source){
+			// Instead of setting original and residual manually, try using swap()
 			Edge *back = current_node -> backedge;
-
 			back -> original = 0;
 			back -> residual = 1;
+			//swap(back->original, back->residual);
 
 			Edge *rev = back -> reverse;
 			rev -> residual = 0;
 			rev -> original = 1;
+			//swap(rev->original, rev->residual);
 
 			current_node = rev -> to;
 		}
@@ -244,14 +246,18 @@ void Graph::print_node_order(string word, int numDice){
     // Set up spellingIds in order
 	int wordIndex;
 	for(int i = 0; i < word.length(); i++) {
-		// 1st word index = numDice + 1
-		// Iterative word index = numDice + 1 + i
 		wordIndex = numDice + 1 + i;
 		for(int j = 0; j < nodes[wordIndex]->adj.size(); j++) {
+			cout << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
 			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice)
 				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
 		}
+		cout << endl;
 	}
+	for(int i = 0; i < nodes[numDice]->adj.size(); i++) {
+		cout << nodes[numDice]->adj[i]->to->id << ": " << nodes[numDice]->adj[i]->original << ", ";
+	}
+	cout << endl;
 
     // Print
     for (int i = 0; i < spellingIds.size(); i++) {
