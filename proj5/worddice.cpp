@@ -250,11 +250,13 @@ void Graph::print_node_order(string word, int numDice){
 		wordIndex = numDice + 1 + i;
 		for(int j = 0; j < nodes[wordIndex]->adj.size(); j++) {
 			cout << "Word node " << i << " - " << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
-			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice)
+			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice) {
 				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
+				cout << "Pushing " << nodes[wordIndex]->adj[j]->to->id << endl;
+			}
 		}
-		cout << endl;
 	}
+	cout << endl;
 	cout << "To node ID: weight (of last dice node)" << endl;
 	for(int i = 0; i < nodes[numDice]->adj.size(); i++) {
 		cout << nodes[numDice]->adj[i]->to->id << ": " << nodes[numDice]->adj[i]->original << ", ";
@@ -271,6 +273,7 @@ void Graph::print_node_order(string word, int numDice){
         }
     }
     cout << word << endl;
+	spellingIds.clear();
 }
 
 void Graph::dump_nodes() {
