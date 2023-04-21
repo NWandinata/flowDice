@@ -200,7 +200,7 @@ bool Graph::spell_word(string word) {
         if (counter == word.length()) return true;
 	}
 
-	// return false;
+	return false;
 }
 
 // Note: After deleting reverse edges of dice, may need to reconnect them to source in reset_edges
