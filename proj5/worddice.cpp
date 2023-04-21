@@ -56,20 +56,17 @@ class Graph{
 	 void reset_edges();
 };
 
-// reverse_edge = true - Means we want to make an edge (auto creates reverse edge by calling itself)
-// reverse_edge = false - ONLY USE INSIDE CONSTRUCTOR TO MAKE REVERSE EDGES (we want a reverse edge)
+// reverse_edge = true - The edge is a reverse edge
 Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	this->to = to;
 	this->from = from;
 	if(reverse_edge) {
 		original = 0; 
 		residual = 1; 
-		//reverse = new Edge(from, to, false);
 	}
 	else {
 		original = 1; 
 		residual = 0; 
-		// Dev Note: Need to find a way to set reverse of the reverse to original
 	}
 }
 
@@ -115,10 +112,8 @@ void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vector
 	edge -> reverse = rev;
 	rev -> reverse = edge;
 	node -> adj.push_back(rev);
-
 	source -> adj.push_back(edge); //adds to adjacency list; might need to fix
 	nodes.push_back(node);//add to Nodes vector
-	//node->adj.push_back(edge->reverse);
 }
 
 
@@ -206,20 +201,6 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 			current_node = rev -> to;
 		}
 	}
-	//cout << "paths not found" << endl;
-
-	//if (counter == word.length()) return true;
-	//else return false;
-
-	/*for(int i = nodes.size() - 2; i > 1; i--) {
-		if(nodes[i]->type == Node::Node_Type::word) {
-			if(nodes[i]->adj[0]->residual != 1)
-				return false;
-		}
-		else
-			break;
-	}
-	return true;*/
 }
 
 // Note: After deleting reverse edges of dice, may need to reconnect them to source in reset_edges
@@ -227,12 +208,7 @@ void Graph::delete_word_from_graph() {
 	// Delete adj list of dice
     for(int i = 1; i < nodes.size(); i++) {
 		for(int j = 0; j < nodes[i]->adj.size(); j++) {
-			//if(nodes[i]->adj[j]->to == source)
-				//continue;
-			//else {
-				//delete nodes[i]->adj[j]->reverse; // May or may not need
-				delete nodes[i]->adj[j];
-			//}
+			delete nodes[i]->adj[j];
 		}
 		nodes[i]->adj.clear();
     }
@@ -254,10 +230,13 @@ void Graph::print_node_order(string word, int numDice){
     // Set up spellingIds in order
 	int wordIndex;
 	cout << "To node ID: weight (of all word nodes)" << endl;
+
 	for(int i = 0; i < word.length(); i++) {
 		wordIndex = numDice + 1 + i;
+
 		for(int j = 0; j < nodes[wordIndex]->adj.size(); j++) {
 			cout << "Word node " << i << " - " << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
+
 			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice) {
 				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
 				cout << "Pushing " << nodes[wordIndex]->adj[j]->to->id << ", ";
@@ -265,6 +244,7 @@ void Graph::print_node_order(string word, int numDice){
 		}
 		cout << endl;
 	}
+
 	cout << "To node ID: weight (of last dice node)" << endl;
 	for(int i = 0; i < nodes[numDice]->adj.size(); i++) {
 		cout << nodes[numDice]->adj[i]->to->id << ": " << nodes[numDice]->adj[i]->original << ", ";
@@ -313,35 +293,19 @@ void Graph::dump_nodes() {
 		}
         cout << endl;
     }
-	
-	/*int wordIndex;
-	for(int i = 0; i < nodes.size() - 1; i++) {
-        wordIndex = i;
-        if(nodes[i]->type == Node::Node_Type::word)
-            break;
-    }
-    cout << "Word Index: " << wordIndex << endl;*/
 }
 
 void Graph::reset_edges() {
 	for(int i = 0; i < source->adj.size(); i++) {
+		// Reset flow values of source edges
 		source->adj[i]->original = 1;
         source->adj[i]->residual = 0;
 
+		// Remake reverse edges from dice to source
 		Edge *rev = new Edge(source, nodes[i + 1], true);
 		source->adj[i]->reverse = rev;
 		rev->reverse = source->adj[i];
 		nodes[i + 1]->adj.push_back(rev);
-
-		/*source->adj[i]->original = 1; 
-		source->adj[i]->residual = 0; 
-		source->adj[i]->reverse->original = 0; 
-		source->adj[i]->reverse->residual = 1; 
-
-		nodes[i + 1]->adj[0]->original = 0;
-		nodes[i + 1]->adj[0]->residual = 1;
-		nodes[i + 1]->adj[0]->reverse->original = 1;
-		nodes[i + 1]->adj[0]->reverse->residual = 0;*/
 	}
 }
 
@@ -380,15 +344,14 @@ int main(int argc, char *argv[]) {
 
 		cout << endl;
 		graph->delete_word_from_graph();
-		cout << "Graph after delete word:" << endl;
-		graph->dump_nodes();
+		//cout << "Graph after delete word:" << endl;
+		//graph->dump_nodes();
 
 		graph->reset_edges();
-		cout << endl;
-		cout << "Graph after reset: " << endl;
-		graph->dump_nodes();
+		//cout << endl;
+		//cout << "Graph after reset: " << endl;
+		//graph->dump_nodes();
 		cout << endl; // Dev Note: Delete later, this is for dump node
-		//id += 1;
 	}
 	finW.close();
 
