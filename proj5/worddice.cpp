@@ -249,7 +249,7 @@ void Graph::print_node_order(string word, int numDice){
 	for(int i = 0; i < word.length(); i++) {
 		wordIndex = numDice + 1 + i;
 		for(int j = 0; j < nodes[wordIndex]->adj.size(); j++) {
-			cout << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
+			cout << "Word node " << i << " - " << nodes[wordIndex]->adj[j]->to->id << ": " << nodes[wordIndex]->adj[j]->original << ", ";
 			if(nodes[wordIndex]->adj[j]->original == 1 && nodes[wordIndex]->adj[j]->to->type == Node::Node_Type::dice)
 				spellingIds.push_back(nodes[wordIndex]->adj[j]->to->id);
 		}
