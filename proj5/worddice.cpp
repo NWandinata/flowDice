@@ -62,13 +62,13 @@ Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 	this->to = to;
 	this->from = from;
 	if(reverse_edge) {
-		original = 1; 
-		residual = 0; 
-		reverse = new Edge(from, to, false);
-	}
-	else {
 		original = 0; 
 		residual = 1; 
+		//reverse = new Edge(from, to, false);
+	}
+	else {
+		original = 1; 
+		residual = 0; 
 		// Dev Note: Need to find a way to set reverse of the reverse to original
 	}
 }
@@ -110,7 +110,7 @@ Graph::~Graph(){
 
 void Graph::add_dice_to_graph(string die, int id){ //add to Node and Edge vectors
     Node* node = new Node(id, Node::dice, die);
-	Edge* edge = new Edge(node, source, true);//add edges later connect to source
+	Edge* edge = new Edge(node, source, false);//add edges later connect to source
     source -> adj.push_back(edge); //adds to adjacency list; might need to fix
 	nodes.push_back(node);//add to Nodes vector
 	//node->adj.push_back(edge->reverse);
@@ -123,15 +123,21 @@ void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back 
         string let(1, word[i]);
         Node* node = new Node(id, Node::word, let);
         nodes.push_back(node);
-        Edge* edge = new Edge(sink, node, true);//add edges later connect to source
-        node -> adj.push_back(edge); //adds to adjacency list;
-		sink->adj.push_back(edge->reverse);
+        Edge* edge = new Edge(sink, node, false);//add edges later connect to source
+		Edge* rev = new Edge(node, sink, true);
+		edge->reverse = rev;
+		rev->reverse = edge;
+        node->adj.push_back(edge); //adds to adjacency list;
+		sink->adj.push_back(rev);
 
         for(int j = 1; j <= numDice; j++){
             if(has_letter(word[i], nodes[j])){ //if a letter in the die matches the asking letter
-                Edge* edge = new Edge(node, nodes[j], true);//add edges later connect to source
-                nodes[j] -> adj.push_back(edge); //adds to adjacency list; might need to fix
-				node->adj.push_back(edge->reverse);
+                Edge* edge = new Edge(node, nodes[j], false);//add edges later connect to source
+				Edge* rev = new Edge(nodes[j], node, true);
+				edge->reverse = rev;
+				rev->reverse = edge;
+                nodes[j]->adj.push_back(edge); //adds to adjacency list; might need to fix
+				node->adj.push_back(rev);
             }
         }
 		id += 1;
@@ -215,15 +221,11 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 void Graph::delete_word_from_graph() {
 	// Delete adj list of dice
     for(int i = 1; i < nodes.size(); i++) {
-		//if(nodes[i]->type == Node::Node_Type::dice || nodes[i]->type == Node::Node_Type::word){
-			for(int j = 0; j < nodes[i]->adj.size(); j++) {
-				//delete nodes[i]->adj[j]->reverse; // May or may not need
-				delete nodes[i]->adj[j];
-			}
-			nodes[i]->adj.clear();
-		//}
-		//else
-			//break;
+		for(int j = 0; j < nodes[i]->adj.size(); j++) {
+			delete nodes[i]->adj[j]->reverse; // May or may not need
+			delete nodes[i]->adj[j];
+		}
+		nodes[i]->adj.clear();
     }
 
 	// Delete word nodes and sink
