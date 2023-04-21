@@ -125,13 +125,13 @@ void Graph::add_word_to_graph(string word, int id, int numDice){ //add &id back 
         nodes.push_back(node);
         Edge* edge = new Edge(sink, node, true);//add edges later connect to source
         node -> adj.push_back(edge); //adds to adjacency list;
-		//sink->adj.push_back(edge->reverse);
+		sink->adj.push_back(edge->reverse);
 
         for(int j = 1; j <= numDice; j++){
             if(has_letter(word[i], nodes[j])){ //if a letter in the die matches the asking letter
                 Edge* edge = new Edge(node, nodes[j], true);//add edges later connect to source
                 nodes[j] -> adj.push_back(edge); //adds to adjacency list; might need to fix
-				//node->adj.push_back(edge->reverse);
+				node->adj.push_back(edge->reverse);
             }
         }
 		id += 1;
@@ -178,8 +178,6 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 	while(BFS()){
 		counter++;
 		if (counter == word.length()) return true;
-		//Node *current_node = new Node;
-		//current_node = sink;
 		Node *current_node = sink;
 		
 		while(current_node != source){
@@ -215,15 +213,15 @@ bool Graph::spell_word(string word) { //aka maxflow - NOT FINISHED
 void Graph::delete_word_from_graph() {
 	// Delete adj list of dice
     for(int i = 1; i < nodes.size(); i++) {
-		if(nodes[i]->type == Node::Node_Type::dice || nodes[i]->type == Node::Node_Type::word){
+		//if(nodes[i]->type == Node::Node_Type::dice || nodes[i]->type == Node::Node_Type::word){
 			for(int j = 0; j < nodes[i]->adj.size(); j++) {
-				delete nodes[i]->adj[j]->reverse; // May or may not need
+				//delete nodes[i]->adj[j]->reverse; // May or may not need
 				delete nodes[i]->adj[j];
 			}
 			nodes[i]->adj.clear();
-		}
-		else
-			break;
+		//}
+		//else
+			//break;
     }
 
 	// Delete word nodes and sink
@@ -363,10 +361,10 @@ int main(int argc, char *argv[]) {
         //else graph -> print_node_order(word, numDice);
 		else cout << "Can spell " << word << endl;
 
-		cout << endl;
+		//cout << endl;
 		graph->delete_word_from_graph();
-		cout << "Graph after delete word:" << endl;
-		graph->dump_nodes();
+		//cout << "Graph after delete word:" << endl;
+		//graph->dump_nodes();
 
 		graph->reset_edges();
 		cout << endl; // Dev Note: Delete later, this is for dump node
